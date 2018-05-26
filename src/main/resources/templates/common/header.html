@@ -87,7 +87,7 @@ Custom styles for this template
 								<!-- <li><a href="#">Another action</a></li>
 								<li><a href="#">Something else here</a></li> -->
 								<li role="separator" class="divider"></li>
-								<li><a href="#">View your Car</a></li>
+								<li><a th:href="@{/car/carList}">View your Car</a></li>
 							</ul></li> 
 							
 						<li><a sec:authorize="isAuthenticated()" th:href="@{/logout}">LogOut</a></li>	

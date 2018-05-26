@@ -11,5 +11,5 @@ public interface CarRepository extends CrudRepository<Car, Long>  {
 	 
 	 List<Car> findByTitleContaining(String title); 
 	 
-//	 Car findOne(Long id);
+
 }
