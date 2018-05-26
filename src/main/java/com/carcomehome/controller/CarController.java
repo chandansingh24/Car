@@ -2,6 +2,7 @@ package com.carcomehome.controller;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -51,7 +52,7 @@ public class CarController {
 			Principal principal
 			) throws IOException {		
 		
-  // Stores the profile image on Amazon S3 and stores the URL in the user's record
+// Stores the profile image on Amazon S3 and stores the URL in the user's record
         if (file != null && !file.isEmpty()) {
 
             String profileImageUrl = s3Service.storeProfileImage(file, principal.getName());  
@@ -65,8 +66,8 @@ public class CarController {
         }		
         carService.save(car);		
 		
-		return "addCar";
-	//return "redirect:/car/carList";	
+	//	return "addCar";
+	  return "redirect:/car/carList";	
 		
 		/*MultipartFile carImage = car.getCarImage();
 
@@ -127,17 +128,17 @@ public class CarController {
 //		
 //		return "redirect:/car/carInfo?id="+car.getId();
 //	}	
-//	
-//		
-//	@RequestMapping("/carList")
-//	public String carList(Model model) {
-//	List<Car> carList = carService.findAll();
-//	model.addAttribute("carList", carList);
-//		
-//		return "carList";
-//	}
-//	
-//	
+	
+		
+	@RequestMapping("/carList")
+	public String carList(Model model) {
+	List<Car> carList = carService.findAll();
+	model.addAttribute("carList", carList);
+		
+		return "carList";
+	}
+	
+	
 //	@RequestMapping(value="/remove", method=RequestMethod.POST)
 //	public String remove(
 //			@ModelAttribute("id") String id, Model model
