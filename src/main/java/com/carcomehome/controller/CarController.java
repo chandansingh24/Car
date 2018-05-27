@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.carcomehome.domain.Car;
+import com.carcomehome.domain.User;
 import com.carcomehome.service.CarService;
+import com.carcomehome.service.UserService;
 import com.carcomehome.service.impl.S3Service;
 
 
@@ -29,7 +31,12 @@ public class CarController {
 	 /** The application logger */
     private static final Logger LOG = LoggerFactory.getLogger(CarController.class);	
 	
-	@Autowired
+	
+    @Autowired
+    private UserService userService;
+    
+    
+    @Autowired
 	private CarService carService;
 	
 	@Autowired
@@ -54,7 +61,7 @@ public class CarController {
 		
 // Stores the profile image on Amazon S3 and stores the URL in the user's record
         if (file != null && !file.isEmpty()) {
-
+            
             String profileImageUrl = s3Service.storeProfileImage(file, principal.getName());  
             if (profileImageUrl != null) {
                 car.setProfileImageUrl(profileImageUrl);
@@ -64,9 +71,11 @@ public class CarController {
             }
 
         }		
-        carService.save(car);		
-		
-	//	return "addCar";
+        
+        User user = userService.findByUsername(principal.getName());
+        car.setUser(user);        
+        carService.save(car);				
+	
 	  return "redirect:/car/carList";	
 		
 		/*MultipartFile carImage = car.getCarImage();
@@ -131,8 +140,10 @@ public class CarController {
 	
 		
 	@RequestMapping("/carList")
-	public String carList(Model model) {
-	List<Car> carList = carService.findAll();
+	public String carList(Model model, Principal principal) {
+		
+	User user = userService.findByUsername(principal.getName());		
+	List<Car> carList = carService.findAll(user.getId());
 	model.addAttribute("carList", carList);
 		
 		return "carList";

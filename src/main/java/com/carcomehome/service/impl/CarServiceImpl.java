@@ -17,7 +17,7 @@ public class CarServiceImpl implements CarService {
 	private CarRepository carRepository;
 	
 	@Override
-	public Car save(Car car) {		
+	public Car save(final Car car) {		
 		return carRepository.save(car);		
 	}
 	
@@ -27,7 +27,7 @@ public class CarServiceImpl implements CarService {
 	}
 	
 	
-	@Override
+	/*@Override
 	public List<Car> findAll() {
 	 List<Car> carList = (List<Car>) carRepository.findAll();
 	 List<Car> activeCarList = new ArrayList<>(); 
@@ -38,7 +38,24 @@ public class CarServiceImpl implements CarService {
 			}
 		}
 	 return activeCarList;
-	}
+	}*/
+	
+	
+	@Override
+	public List<Car> findAll(Long userId) {
+		
+	List<Car> carList = carRepository.findAllByUserId(userId);	
+	
+	 List<Car> activeCarList = new ArrayList<>(); 
+	 
+	 for (Car car: carList) {
+			if(car.isActive()) {
+				activeCarList.add(car);
+			}
+		}
+	 return activeCarList;
+	}	
+	
 	
     @Override
 	public Car findOne(Long id) {

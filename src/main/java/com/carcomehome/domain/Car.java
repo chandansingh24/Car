@@ -1,18 +1,13 @@
 package com.carcomehome.domain;
 
-import java.util.List;
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.OneToMany;
-import javax.persistence.Transient;
-
-import org.springframework.web.multipart.MultipartFile;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class Car {
@@ -47,8 +42,9 @@ public class Car {
 	private String description;
 	private int inStockNumber;
 	
-	/*@Column(columnDefinition = "text")
-	private String descritpion;*/
+	@ManyToOne(fetch=FetchType.EAGER)
+	@JoinColumn(name="user_id")
+	private User user;
 	
 	@Column(name = "profile_image_url")
     private String profileImageUrl;
@@ -60,8 +56,17 @@ public class Car {
 //	@JsonIgnore
 //	private List<CarToCartItem> carToCartItemList;
 
+	
 	public Long getId() {
 		return id;
+	}
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
 	}
 
 	public void setId(Long id) {

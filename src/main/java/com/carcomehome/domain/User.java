@@ -1,7 +1,9 @@
 package com.carcomehome.domain;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -17,6 +19,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.carcomehome.domain.security.Authority;
+import com.carcomehome.domain.security.PasswordResetToken;
 import com.carcomehome.domain.security.UserRole;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -56,6 +59,19 @@ public class User implements UserDetails {
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JsonIgnore
 	private Set<UserRole> userRoles = new HashSet<>();
+	
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "user")
+	private List<Car> car;   
+	
+	
+	public List<Car> getCar() {
+		return car;
+	}
+	
+	public void setCar(List<Car> car) {
+		this.car = car;
+	}
 	
 	public Long getId() {
 		return id;

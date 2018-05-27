@@ -7,9 +7,9 @@ import com.carcomehome.domain.Car;
 
 public interface CarService {
 	
-    Car save(Car car);  
+    Car save(final Car car);  
    	
-	List<Car> findAll();
+	List<Car> findAll(Long userId);
 	
 	Car findOne(Long id);
 	
