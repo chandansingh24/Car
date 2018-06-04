@@ -11,6 +11,8 @@ public interface CarService {
    	
 	List<Car> findAll(Long userId);
 	
+	List<Car> findAllCars();
+	
 	Car findOne(Long id);
 	
 	List<Car> findByCategory(String category);

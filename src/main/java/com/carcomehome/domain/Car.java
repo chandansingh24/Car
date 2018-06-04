@@ -1,5 +1,8 @@
 package com.carcomehome.domain;
 
+import java.util.List;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Car {
@@ -42,13 +46,18 @@ public class Car {
 	private String description;
 	private int inStockNumber;
 	
-	@ManyToOne(fetch=FetchType.EAGER)
+	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="user_id")
 	private User user;
 	
 	@Column(name = "profile_image_url")
     private String profileImageUrl;
 	
+	//Reservation Table Mapping
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "car")
+	private List<Reservation> reservation; 
+	
+     	
 //	@Transient
 //	private MultipartFile carImage;        //@Transient - Not stored in database
 	
@@ -57,6 +66,14 @@ public class Car {
 //	private List<CarToCartItem> carToCartItemList;
 
 	
+	public List<Reservation> getReservation() {
+		return reservation;
+	}
+
+	public void setReservation(List<Reservation> reservation) {
+		this.reservation = reservation;
+	}
+
 	public Long getId() {
 		return id;
 	}

@@ -24,11 +24,10 @@ public class CarServiceImpl implements CarService {
 	@Override
 	public void removeOne(Long id) {
 		carRepository.deleteById(id);		
-	}
+	}	
 	
-	
-	/*@Override
-	public List<Car> findAll() {
+	@Override
+	public List<Car> findAllCars() {
 	 List<Car> carList = (List<Car>) carRepository.findAll();
 	 List<Car> activeCarList = new ArrayList<>(); 
 	 
@@ -38,7 +37,7 @@ public class CarServiceImpl implements CarService {
 			}
 		}
 	 return activeCarList;
-	}*/
+	}
 	
 	
 	@Override

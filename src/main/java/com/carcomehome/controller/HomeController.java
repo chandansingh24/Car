@@ -1,11 +1,15 @@
 package com.carcomehome.controller;
 
+import java.security.Principal;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.UUID;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.websocket.server.PathParam;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
@@ -22,10 +26,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.carcomehome.domain.Car;
 import com.carcomehome.domain.User;
 import com.carcomehome.domain.security.PasswordResetToken;
 import com.carcomehome.domain.security.Role;
 import com.carcomehome.domain.security.UserRole;
+import com.carcomehome.service.CarService;
 import com.carcomehome.service.UserService;
 import com.carcomehome.service.impl.UserSecurityService;
 import com.carcomehome.utility.MailConstructor;
@@ -45,6 +51,9 @@ public class HomeController {
 
 	@Autowired
 	private UserSecurityService userSecurityService;
+	
+	@Autowired
+	private CarService carService;
 
 	@RequestMapping("/")
 	public String index() {
@@ -61,6 +70,45 @@ public class HomeController {
 		model.addAttribute("classActiveLogin", true);
 		return "myAccount";
 	}
+	
+	@RequestMapping("/carshelf")
+	public String carshelf(Model model, Principal principal) {
+		
+		if(principal != null) {
+			String username = principal.getName();
+			User user = userService.findByUsername(username);
+			model.addAttribute("user", user);
+		}
+				
+		List<Car> carList = carService.findAllCars();
+		model.addAttribute("carList", carList);
+		model.addAttribute("activeAll", true);
+		return "carshelf";
+	}
+	
+	
+	@RequestMapping("/carDetail")
+	public String bookDetail(
+			@PathParam("id") Long id, Model model, Principal principal
+			) {
+		if(principal != null) {
+			String username = principal.getName();
+			User user = userService.findByUsername(username);
+			model.addAttribute("user", user);
+		}
+		
+		Car car = carService.findOne(id);
+		
+		model.addAttribute("car", car);
+		
+		List<Integer> qtyList = Arrays.asList(1,2,3,4,5,6,7,8,9,10);
+		
+		model.addAttribute("qtyList", qtyList);
+		model.addAttribute("qty", 1);
+		
+		return "carDetail";
+	}	
+	
 
 	@RequestMapping(value="/forgetPassword", method=RequestMethod.POST)
 	public String forgetPassword(HttpServletRequest request, @RequestParam("email") String email, ModelMap model) {
