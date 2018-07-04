@@ -1,6 +1,5 @@
 package com.carcomehome.domain;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -14,12 +13,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.carcomehome.domain.security.Authority;
-import com.carcomehome.domain.security.PasswordResetToken;
 import com.carcomehome.domain.security.UserRole;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -44,7 +43,7 @@ public class User implements UserDetails {
 	private String phone;
 	private boolean enabled;
 	
-	/*@OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
+	@OneToOne(cascade = CascadeType.ALL, mappedBy = "user")
 	private ShoppingCart shoppingCart;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "user")
@@ -54,7 +53,7 @@ public class User implements UserDetails {
 	private List<UserPayment> userPaymentList;
 	
 	@OneToMany(mappedBy="user")
-	private List<Order> orderList;*/	
+	private List<Order> orderList;
 	
 	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
 	@JsonIgnore
@@ -128,7 +127,7 @@ public class User implements UserDetails {
 	}	
 	
 	
-/*	public List<UserShipping> getUserShippingList() {
+	public List<UserShipping> getUserShippingList() {
 		return userShippingList;
 	}
 	
@@ -158,7 +157,7 @@ public class User implements UserDetails {
 	
 	public void setOrderList(List<Order> orderList) {
 		this.orderList = orderList;
-	}*/
+	}
 	
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {

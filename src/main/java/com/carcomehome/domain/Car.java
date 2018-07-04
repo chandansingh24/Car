@@ -13,6 +13,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 public class Car {
 	@Id
@@ -61,9 +63,9 @@ public class Car {
 //	@Transient
 //	private MultipartFile carImage;        //@Transient - Not stored in database
 	
-//	@OneToMany(mappedBy = "car")
-//	@JsonIgnore
-//	private List<CarToCartItem> carToCartItemList;
+	@OneToMany(mappedBy = "car")
+	@JsonIgnore
+	private List<CarToCartItem> carToCartItemList;
 
 	
 	public List<Reservation> getReservation() {
@@ -218,9 +220,7 @@ public class Car {
 
 	public void setProfileImageUrl(String profileImageUrl) {
 		this.profileImageUrl = profileImageUrl;
-	}
-	
-	
+	}	
 	
 
 	/*public MultipartFile getCarImage() {
@@ -231,12 +231,12 @@ public class Car {
 		this.carImage = carImage;
 	}
 */
-//	public List<CarToCartItem> getCarToCartItemList() {
-//		return carToCartItemList;
-//	}
-//
-//	public void setCarToCartItemList(List<CarToCartItem> carToCartItemList) {
-//		this.carToCartItemList = carToCartItemList;
-//	}		
+	public List<CarToCartItem> getCarToCartItemList() {
+		return carToCartItemList;
+	}
+
+	public void setCarToCartItemList(List<CarToCartItem> carToCartItemList) {
+		this.carToCartItemList = carToCartItemList;
+	}		
 
 }

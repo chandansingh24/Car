@@ -93,50 +93,70 @@ public class CarController {
 
 		return "redirect:carList";	*/				
 	}
+		
+	@RequestMapping("/carInfo")
+	public String carInfo(@RequestParam("id") Long id, Model model) {
+		Car car = carService.findOne(id);
+		model.addAttribute("car", car);
+		
+		return "carInfo";
+	}
+	
+	@RequestMapping("/updateCar")
+	public String updateCar(@RequestParam("id") Long id, Model model) {
+		Car car = carService.findOne(id);
+		model.addAttribute("car", car);
+		
+		return "updateCar";
+	}
+	
+	
+	@RequestMapping(value="/updateCar", method=RequestMethod.POST)
+	public String updatecarPost(@ModelAttribute("car") Car car,
+			@RequestParam("profileImageUrl") String imageURL,
+			@RequestParam(name="file", required=false) MultipartFile file,
+			Principal principal) throws IOException {
+				
+		// Stores the profile image on Amazon S3 and stores the URL in the user's record
+        if (file != null && !file.isEmpty()) {
+            
+            String profileImageUrl = s3Service.storeProfileImage(file, principal.getName());  
+            if (profileImageUrl != null) {
+                car.setProfileImageUrl(profileImageUrl);
+            } else {            	
+            	
+            	LOG.warn("There was a problem uploading the profile image to S3. The user's profile will" +
+                        " be created without the image");
+            }
 
-	
-	
-//	@RequestMapping("/carInfo")
-//	public String carInfo(@RequestParam("id") Long id, Model model) {
-//		Car car = carService.findOne(id);
-//		model.addAttribute("car", car);
-//		
-//		return "carInfo";
-//	}
-//	
-//	@RequestMapping("/updateCar")
-//	public String updateCar(@RequestParam("id") Long id, Model model) {
-//		Car car = carService.findOne(id);
-//		model.addAttribute("car", car);
-//		
-//		return "updateCar";
-//	}
-//	
-//	
-//	@RequestMapping(value="/updateCar", method=RequestMethod.POST)
-//	public String updatecarPost(@ModelAttribute("car") Car car, HttpServletRequest request) {
-//		carService.save(car);
-//		
-//		MultipartFile carImage = car.getCarImage();
-//		
-//		if(!carImage.isEmpty()) {
-//			try {
-//				byte[] bytes = carImage.getBytes();
-//				String name = car.getId() + ".jpg";
-//				
-//				Files.delete(Paths.get("src/main/resources/static/image/car/"+name));
-//				
-//				BufferedOutputStream stream = new BufferedOutputStream(
-//						new FileOutputStream(new File("src/main/resources/static/image/car/" + name)));
-//				stream.write(bytes);
-//				stream.close();
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//		}
-//		
-//		return "redirect:/car/carInfo?id="+car.getId();
-//	}	
+        } else {
+        	car.setProfileImageUrl(imageURL);
+        }
+		        
+        User user = userService.findByUsername(principal.getName());
+        car.setUser(user);         
+        carService.save(car);
+		
+		/*MultipartFile carImage = car.getCarImage();
+		
+		if(!carImage.isEmpty()) {
+			try {
+				byte[] bytes = carImage.getBytes();
+				String name = car.getId() + ".jpg";
+				
+				Files.delete(Paths.get("src/main/resources/static/image/car/"+name));
+				
+				BufferedOutputStream stream = new BufferedOutputStream(
+						new FileOutputStream(new File("src/main/resources/static/image/car/" + name)));
+				stream.write(bytes);
+				stream.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}*/
+		
+		return "redirect:/car/carInfo?id="+car.getId();
+	}	
 	
 		
 	@RequestMapping("/carList")
@@ -150,15 +170,17 @@ public class CarController {
 	}
 	
 	
-//	@RequestMapping(value="/remove", method=RequestMethod.POST)
-//	public String remove(
-//			@ModelAttribute("id") String id, Model model
-//			) {
-//		carService.removeOne(Long.parseLong(id.substring(7)));
-//		List<Car> carList = carService.findAll();
-//		model.addAttribute("carList", carList);
-//		
-//		return "redirect:/car/carList";
-//	}
+	@RequestMapping(value="/remove", method=RequestMethod.POST)
+	public String remove(
+			@ModelAttribute("id") String id, Model model,
+			Principal principal
+			) {
+		carService.removeOne(Long.parseLong(id.substring(7)));
+		User user = userService.findByUsername(principal.getName());		
+		List<Car> carList = carService.findAll(user.getId());
+		model.addAttribute("carList", carList);
+		
+		return "redirect:/car/carList";
+	}
 
 }

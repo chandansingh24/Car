@@ -68,7 +68,7 @@ public class S3Service {
             // The temporary file where the profile image will be stored
             File tmpProfileImageFile = new File(tmpImageStoredFolder.getAbsolutePath()
                     + File.separatorChar
-                    + PROFILE_PICTURE_FILE_NAME
+                    + PROFILE_PICTURE_FILE_NAME 
                     + "."
                     + FilenameUtils.getExtension(uploadedFile.getOriginalFilename()));
 

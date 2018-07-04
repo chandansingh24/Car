@@ -45,9 +45,15 @@
 	<button th:id="deleteSelected" class="btn btn-danger ">Delete Selected</button>
 	</div>	
 	
-	<div th:replace="common/header :: footer"></div> 
+	
+	<div th:replace="common/header :: footer"></div> 	 
 	<div th:replace="common/header :: body-bottom-scripts"></div>
 	
-		
+	<script>
+		 $(document).ready(function() {
+			$("#carListTable").DataTable();			
+		}); 
+	</script>
+	
 </body>
 </html>

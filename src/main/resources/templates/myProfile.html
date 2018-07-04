@@ -53,7 +53,7 @@
 										password for the current user.
 									</div>
 
-									<div class="alert alert-succss" th:if="${updateSuccess}">
+									<div class="alert alert-success" th:if="${updateSuccess}">
 										<strong>Update Success!</strong>
 									</div>									
 									
@@ -328,7 +328,7 @@
 									</div>
 
 									<div th:if="${addNewCreditCard}">
-										<form th:action="@{addNewCreditCard}" method="post">
+										<form th:action="@{/addNewCreditCard}" method="post">
 											<div class="bg-info" th:if="${updateUserPaymentInfo}">User
 												info updated.</div>
 

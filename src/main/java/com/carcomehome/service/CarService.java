@@ -13,6 +13,8 @@ public interface CarService {
 	
 	List<Car> findAllCars();
 	
+//	 List<Car> findNonBookedOnes(); // Added as an POC
+	
 	Car findOne(Long id);
 	
 	List<Car> findByCategory(String category);

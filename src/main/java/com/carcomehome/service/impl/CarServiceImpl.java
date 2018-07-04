@@ -26,9 +26,14 @@ public class CarServiceImpl implements CarService {
 		carRepository.deleteById(id);		
 	}	
 	
+	
 	@Override
 	public List<Car> findAllCars() {
-	 List<Car> carList = (List<Car>) carRepository.findAll();
+//	 List<Car> carList = (List<Car>) carRepository.findAll();
+		String pickUpDate = "2018-02-01";
+		String returnDate = "2018-02-14";
+		List<Car> carList = carRepository.findNonBookedOnes(pickUpDate, returnDate);  //Added as an POC
+	 
 	 List<Car> activeCarList = new ArrayList<>(); 
 	 
 	 for (Car car: carList) {

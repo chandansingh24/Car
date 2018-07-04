@@ -3,6 +3,9 @@ package com.carcomehome.service;
 import java.util.Set;
 
 import com.carcomehome.domain.User;
+import com.carcomehome.domain.UserBilling;
+import com.carcomehome.domain.UserPayment;
+import com.carcomehome.domain.UserShipping;
 import com.carcomehome.domain.security.PasswordResetToken;
 import com.carcomehome.domain.security.UserRole;
 
@@ -16,17 +19,17 @@ public interface UserService {
 	
 	User findByEmail(String email);
 	
-//	User findById(Long id);
+	User findById(Long id);
 	
 	User createUser(User user, Set<UserRole> userRoles) throws Exception;
 	
 	User save(User user);
 	
-	/*void updateUserBilling(UserBilling userBilling, UserPayment userPayment, User user);
+	void updateUserBilling(UserBilling userBilling, UserPayment userPayment, User user);
 	
 	void updateUserShipping(UserShipping userShipping, User user);
 	
 	void  setUserDefaultPayment(Long userPaymentId, User user);
 	
-	void  setUserDefaultShipping(Long userShippingId, User user);*/
+	void  setUserDefaultShipping(Long userShippingId, User user);
 }

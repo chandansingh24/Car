@@ -2,12 +2,19 @@ package com.carcomehome.utility;
 
 import java.util.Locale;
 
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.mail.javamail.MimeMessagePreparator;
 import org.springframework.stereotype.Component;
 import org.thymeleaf.TemplateEngine;
+import org.thymeleaf.context.Context;
 
+import com.carcomehome.domain.Order;
 import com.carcomehome.domain.User;
 
 
@@ -35,7 +42,7 @@ public class MailConstructor {
 		
 	}	
 	
-	/*public MimeMessagePreparator constructOrderConfirmationEmail (User user, Order order, Locale locale) {
+	public MimeMessagePreparator constructOrderConfirmationEmail (User user, Order order, Locale locale) {
 		Context context = new Context();
 		context.setVariable("order", order);
 		context.setVariable("user", user);
@@ -58,5 +65,5 @@ public class MailConstructor {
 		
 		return messagePreparator;
 	}
-*/
+
 }
