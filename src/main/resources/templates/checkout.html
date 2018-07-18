@@ -100,7 +100,7 @@
 												<td
 													th:text="${userShipping.userShippingStreet1}+' '+${userShipping.userShippingStreet2}+', '+${userShipping.userShippingCity}
 												+', '+${userShipping.userShippingState}"></td>
-												<td><a th:href="@{/setShippingAddress(userShippingId=${userShipping.id})}">use
+												<td><a th:href="@{/setShippingAddress(userShippingId=${userShipping.id}, cartId=${cartItem.id})}">use
 														this address</a></td>
 											</tr>
 										</tbody>
@@ -188,7 +188,7 @@
 											<tr th:each="userPayment : ${userPaymentList}">
 												<td th:text="${userPayment.cardName}"></td>
 												<td><a
-													th:href="@{/setPaymentMethod(userPaymentId=${userPayment.id})}">use
+													th:href="@{/setPaymentMethod(userPaymentId=${userPayment.id}, cartId=${cartItem.id})}">use
 														this payment</a></td>
 											</tr>
 										</tbody>
@@ -387,7 +387,7 @@
 									</div>
 
 									<!-- display products in cart -->
-									<div class="row" th:each="cartItem : ${cartItemList}">
+									<div class="row">  <!--  th:each="cartItem : ${cartItemList}" -->
 											<hr />
 											<div class="col-xs-2">
 												<a th:href="@{/carDetail(id=${cartItem.car.id})}"> <img
@@ -436,6 +436,7 @@
 									</h4>
 									<br />
 									<br />
+									<input hidden="hidden" name="cartId" th:value="${cartItem.id}" />
 									<button type="submit" class="btn btn-warning btn-block">Place
 										your order</button>
 									<p style="font-size: smaller;">

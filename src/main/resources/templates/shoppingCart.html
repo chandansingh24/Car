@@ -23,11 +23,11 @@
 		<div class="row" style="margin-top: 10px;">
 			<div class="col-xs-12">
 				<div class="row">
-					<div class="col-xs-6 text-left">
+					<div class="col-md-6 text-left">
 						<a class="btn btn-warning" th:href="@{/carshelf}">Continue
 							Shopping</a>
 					</div>
-					<div class="col-xs-6 text-right">
+					<div class="col-md-6 text-right">
 						<a class="btn btn-primary"
 							th:href="@{/checkout(id=${shoppingCart.id})}">Check Out</a>
 					</div>
@@ -41,14 +41,14 @@
 
 					<br /> <br />
 					<div class="row">
-						<div class="col-xs-8 ">
+						<div class="col-md-6 ">
 							<h4 style="margin-left:70px;">Products</h4>
 						</div>
-						<div class="col-xs-2">
+						<div class="col-md-2">
 							<h4>Price</h4>
 						</div>
-						<div class="col-xs-2">
-							<h4>Qty</h4>
+						<div class="col-md-4 text-left">
+							<h4>Special Care</h4>
 						</div>
 					</div>
 
@@ -57,14 +57,14 @@
 					<div class="row" th:each="cartItem : ${cartItemList}">
 						<form th:action="@{/shoppingCart/updateCartItem}" method="post">
 							<hr />
-							<div class="col-xs-4">
-								<a th:href="@{carDetail(id=${cartItem.car.id})}"> <img
+							<div class="col-md-3">
+								<a th:href="@{/carDetail(id=${cartItem.car.id})}"> <img
 									style="width:225px;"
 									class="img-responsive shelf-car center-block"
 									th:src="${cartItem.car.profileImageUrl}" />
 								</a>    <!--  th:src="#{adminPath}+@{/image/car/}+ ${cartItem.car.id}+'.jpg'" -->
 							</div>
-							<div class="col-xs-4">
+							<div class="col-md-3">
 								<div style="margin-left:50px;">
 								<a th:href="@{/carDetail?id=}+${cartItem.car.id}"><h4 th:text="${cartItem.car.title}"></h4></a>
 								<p th:if="${cartItem.car.inStockNumber&gt;10}"
@@ -81,20 +81,26 @@
 								</div>
 							</div>
 
-							<div class="col-xs-2">
+							<div class="col-md-2">
 								<h5 style="color: #db3208; font-size: large;">
 									$<span th:text="${cartItem.car.ourPrice}"
 										th:style="${cartItem.car.inStockNumber}==0? 'text-decoration: line-through' : ''"></span>
 								</h5>
 							</div>
 
-							<div class="col-xs-2">
+							<div class="col-md-2">
 								<input hidden="hidden" name="id" th:value="${cartItem.id}" /> <input
-									th:id="${cartItem.id}" th:name="qty" th:disabled="${cartItem.car.inStockNumber==0}" class="form-control cartItemQty" th:value="${cartItem.qty}" />
+									th:id="${cartItem.id}" th:name="qty" th:disabled="${cartItem.car.inStockNumber==0}" class="form-control cartItemQty text-center" th:value="${cartItem.qty}" />
 								<button style="display: none;"
 									th:id="'update-item-'+${cartItem.id}" type="submit"
 									class="btn btn-warning btn-xs">Update</button>
 							</div>
+							
+						  <div class="col-md-2">
+						    <a class="btn btn-success"
+							th:href="@{/checkout(id=${cartItem.id})}">Drive Me</a>
+					       </div>
+							
 						</form>
 					</div>
 

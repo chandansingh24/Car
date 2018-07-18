@@ -13,7 +13,7 @@ public class DateUtils {
     //
     // See this link for details: https://docs.oracle.com/javase/tutorial/i18n/format/simpleDateFormat.html
     
-	private static SimpleDateFormat formatter = new SimpleDateFormat("dd/mm/yyyy");
+	private static SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 	
 	// read a date string and parse/convert to a date
 	public static Date parseDate(String dateStr) throws ParseException {

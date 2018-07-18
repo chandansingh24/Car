@@ -7,7 +7,7 @@
 
 	<div class="container">
 
-		<div class="row" style="margin-bottom: 10px;">
+		<!-- <div class="row" style="margin-bottom: 1px;">
 			<div class="col-xs-12">
 				<h2 class="section-headline">
 					<h2 class="section-headline">
@@ -16,12 +16,57 @@
 					</h2>
 				</h2>
 			</div>
-		</div>
-		<hr
-			style="position: relative; width: 100%; height: 6px; background-color: #F7B633; z-index: -1; margin-top: -80px;" />
+		</div> -->
+		<!-- <hr
+			style="position: relative; width: 100%; height: 6px; background-color: #F7B633; z-index: -1; margin-top: -80px;" /> -->
 
+      <!--   Search Form Added -->
+      
+          <form th:action="@{/carshelfDateImplementation}" method ="get">
+				<div class="form-row">
+				
+				     <div class="form-group col-md-2">
+						<label for="inputZip">Zip</label> <input type="text"
+							class="form-control" id="inputZip" name="inputZip"/>
+					</div>
+					
+					<div class="form-group col-md-1">					   			
+						 <label style="margin-top:30px; margin-left:15px">OR</label>  
+					</div>
+				
+					<div class="form-group col-md-5">
+						<label for="inputCity">City</label> <input type="text"
+							class="form-control" id="inputCity" name="inputCity"/>
+					</div>
+					
+					<div class="form-group col-md-4">
+						<label for="inputState">State</label> <select id="inputState"
+							class="form-control">
+							<option selected>Choose...</option>
+							<option>...</option>
+						</select>
+					</div>					
+				</div>
 
-		<div class="row" style="margin-top: 60px;">
+			<div class="form-row">			
+			<div class="form-group col-md-4">	
+			<label for="startDate">Pick Up Date</label><input type="date" class="form-control" 
+			     id="startDate" name="startDate" placeholder="Start Date" />						
+			</div>
+			
+			<div class="form-group col-md-4">
+			<label for="endDate">Return Date</label><input type="date" class="form-control" 
+			     id="returnDate" name="returnDate" placeholder="End Date" />			
+			</div>
+			
+			<div class="form-group col-md-4">
+			<button type="submit" class="btn btn-success" style="margin-top: 25px; width: 350px">Search   Car</button>			
+			</div>			
+			</div>
+		</form>					
+		
+		
+		<div class="row" style="margin-top: 100px;">
 			 <div class="col-xs-3">
 				 <h3>
 					<label for="category">Category</label>
@@ -48,9 +93,14 @@
 						th:href="@{/searchByCategory(category='Tourer &amp; Series')}"
 						th:classappend="${activeTourerSeries}? 'active'"
 						class="list-group-item">Tourer &amp; Series</a>
+						  <a
+						href="#" th:classappend="test"
+						class="list-group-item">Organization</a>  
+						
 				</div> 
-			</div> 
-
+			</div> 			
+			
+			
 			<div class="col-xs-9">
 				<div th:if="${emptyList}">
 					<h5 style="font-style: italic;">Oops, no result is found. Try

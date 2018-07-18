@@ -1,8 +1,10 @@
 package com.carcomehome.controller;
 
 import java.security.Principal;
+import java.text.ParseException;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
@@ -45,6 +47,7 @@ import com.carcomehome.service.UserPaymentService;
 import com.carcomehome.service.UserService;
 import com.carcomehome.service.UserShippingService;
 import com.carcomehome.service.impl.UserSecurityService;
+import com.carcomehome.utility.DateUtils;
 import com.carcomehome.utility.MailConstructor;
 import com.carcomehome.utility.SecurityUtility;
 import com.carcomehome.utility.USConstants;
@@ -80,7 +83,12 @@ public class HomeController {
 	
 	@Autowired
 	private OrderService orderService;
-
+	
+	private Date pickUpDate;
+	
+	private Date returnBackDate;
+	
+		
 	@RequestMapping("/")
 	public String index() {
 		return "index";
@@ -748,5 +756,54 @@ public class HomeController {
 		}
 		
 	 
+	/* Pick Up Date and Return Date implementation */
+	  
+	  @RequestMapping("/carshelfDateImplementation")
+		public String carshelfDateImplementation(
+				@RequestParam(name="startDate", required=false) String startDate,
+				@RequestParam(name="returnDate", required=false) String returnDate,
+				@RequestParam(name="inputZip", required=false) String inputZip,
+				@RequestParam(name="inputCity", required=false) String inputCity,
+				Model model, Principal principal) throws ParseException {
+			
+	     if ((startDate != "") && (returnDate != "")) {
+	    	 this.pickUpDate = DateUtils.parseDate(startDate);
+		     this.returnBackDate = DateUtils.parseDate(returnDate);	 
+		        
+	     } else {
+	    	 
+	    	 model.addAttribute("invalidDateType", "Please check your input dates" );
+	//    	 return "carShelf";
+	     }          
+	     
+		  if (inputZip !="") {
+			  List<Car> carList = carService.findAllCarsZipCode(pickUpDate, returnBackDate);	
+			  model.addAttribute("carList", carList);			  
+		  } else if (inputCity !="") {
+			  List<Car> carList = carService.findAllCarsCityAndState(pickUpDate, returnBackDate);
+			  model.addAttribute("carList", carList);
+		  } else {
+			  model.addAttribute("invalidZipAndCityState", "Please refine your search with either Zipcode or City");
+		  }		  	
+		  
+		  if(principal != null) {
+				String username = principal.getName();
+				User user = userService.findByUsername(username);
+				model.addAttribute("user", user);
+			}
+						
+			model.addAttribute("activeAll", true);
+			return "carshelf";
+		}
 
+	//Pickup & ReturnDate getters
+	  
+	public Date getPickUpDate() {
+		return pickUpDate;
+	}
+
+	public Date getReturnBackDate() {
+		return returnBackDate;
+	}	  
+   
 }

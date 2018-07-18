@@ -1,7 +1,9 @@
 package com.carcomehome.service;
 
+import java.util.Date;
 import java.util.List;
-import java.util.Optional;
+
+import org.springframework.data.repository.query.Param;
 
 import com.carcomehome.domain.Car;
 
@@ -14,6 +16,10 @@ public interface CarService {
 	List<Car> findAllCars();
 	
 //	 List<Car> findNonBookedOnes(); // Added as an POC
+	 
+	List<Car> findAllCarsZipCode(Date pickUpDate, Date returnDate);	
+	
+	List<Car> findAllCarsCityAndState(Date pickUpDate, Date returnDate);	
 	
 	Car findOne(Long id);
 	
