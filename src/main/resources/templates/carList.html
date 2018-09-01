@@ -17,7 +17,9 @@
 						<th>Category</th>
 						<th>List Price</th>
 						<th>Our Price</th>
-						<th>Active?</th>
+						<th>Business Active?</th>
+						<th>Barter Price</th>
+						<th>Barter Active?</th>						
 						<th>Operation</th>
 					</tr>
 				</thead>
@@ -33,6 +35,8 @@
 						<td th:text="${car.listPrice}"></td>
 						<td th:text="${car.ourPrice}"></td>
 						<td th:text="${car.active}"></td>
+						<td th:text="${car.barterPrice}"></td>
+						<td th:text="${car.barterActive}"></td>
 						<td>
 							<input hidden="hidden" name="id" th:value="${car.id}" />
 							<button th:id="'oneCar-'+${car.id}" class="btn btn-danger btn-xs delete-car" type="submit" value="delete" >

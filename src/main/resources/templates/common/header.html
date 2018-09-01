@@ -4,48 +4,63 @@
 <head th:fragment="common-header">
 <meta charset="utf-8" />
 <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>ComeHomeCar</title>
-
- <!-- Bootstrap core CSS
-<link href="/css/bootstrap.min.css" rel="stylesheet" />
-
-<link href="/css/non-responsive.css" rel="stylesheet" />
-
-data table
-<link th:href="@{/css/jquery.dataTables.min.css}" rel="stylesheet" />
-<link th:href="@{/css/dataTables.bootstrap.min.css}" rel="stylesheet" />
-
-<link th:href="@{/css/font-awesome.min.css}" rel="stylesheet" />
-
-Custom styles for this template
-<link href="/css/style.css" rel="stylesheet" />
-
-<link rel="icon" href="/image/applie-touch-icon.png" /> --> 
-
-<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/>
+<link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css"/> 
 <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css"/>
   
-   <!--  Latest Font awesome CDN -->
-<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.1.0/css/all.css" integrity="sha384-lKuwvrZot6UHsBSfcMvOkWwlCMgc0TaWr+30HWe3a4ltaBwTZhyTEggF5tJv8tbt" crossorigin="anonymous"/>
-
-<link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css"/>
+<link href="https://fonts.googleapis.com/css?family=Lato:100,300,400,700,900" rel="stylesheet"/> 
+<!-- <link href="http://fonts.googleapis.com/css?family=Lato:300,400,700,300italic,400italic,700italic" rel="stylesheet" type="text/css"/> -->
 
 <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.16/css/jquery.dataTables.min.css"/>
-<link href="/css/style.css" rel="stylesheet" />
 
+<link rel="stylesheet" href="/css/style.css"/>
+
+ <link rel="icon" href="https://s3.us-east-2.amazonaws.com/comehomecar/globalPhotos/sports-car.png"/>  
+ 
  <script src="https://cloud.tinymce.com/stable/tinymce.min.js"></script>
-  <script>tinymce.init({ selector:'textarea' });</script>
+ <script>tinymce.init({ selector:'textarea' });</script>
+ 
+ <title>ComeHomeCar | A different experience</title> 
 
 </head>
 
 <body>
+	
 	<div th:fragment="navbar">
-		<!-- Static navbar -->
-		<nav class="navbar navbar-inverse navbar-fixed-top">
+	
+	<!--****************************************************************************************** -->
+	
+	 <div class="navigation">
+            <input type="checkbox" class="navigation__checkbox" id="navi-toggle">
+
+            <label for="navi-toggle" class="navigation__button">
+                <span class="navigation__icon">&nbsp;</span>
+            </label>
+
+          <div class="navigation__background">&nbsp;</div>
+
+            <nav class="navigation__nav">
+                <ul class="navigation__list">
+                    <li class="navigation__item"><a th:href="@{/}" class="navigation__link">ComeHomeCar</a></li>
+                    <li class="navigation__item"><a sec:authorize="isAnonymous()" th:href="@{/login}" class="navigation__link">Login Here</a></li>
+                    <li class="navigation__item"><a sec:authorize="isAnonymous()" th:href="@{/signUp?planId=1}" class="navigation__link">Sign Up User</a></li>
+                    <li class="navigation__item"><a sec:authorize="isAnonymous()" th:href="@{/signUp?planId=2}" class="navigation__link">Sign Up Car Owner </a></li>
+                    <li class="navigation__item"><a sec:authorize="isAuthenticated()" th:href="@{/myProfile}" class="navigation__link">My Profile</a></li>
+                    <li class="navigation__item"><a sec:authorize="hasRole('ROLE_OWNER')" th:href="@{/car/add}" class="navigation__link">Add new Car</a></li>
+                    <li class="navigation__item"><a sec:authorize="hasRole('ROLE_OWNER')" th:href="@{/car/carList}" class="navigation__link">View your Car</a></li>
+                    <li class="navigation__item"><a sec:authorize="isAuthenticated()" th:href="@{/logout}" class="navigation__link">Logout ......</a></li>
+                   <!--  <li class="navigation__item"><a href="#" class="navigation__link"><span>06</span>Your benfits</a></li> -->
+                    </ul>
+            </nav>
+         </div> 	  
+	
+	<!--******************************************************************************************  -->
+			
+		<!-- <nav class="navbar navbar-inverse navbar-fixed-top">
 			<div class="container">
-				<!-- <div class="container-fluid"> -->
-				<!-- Brand and toggle get grouped for better mobile display -->
+				<div class="container-fluid">
+				Brand and toggle get grouped for better mobile display
 				<div class="navbar-header">
 					<button type="button" class="navbar-toggle collapsed"
 						data-toggle="collapse" data-target="#bs-example-navbar-collapse-1"
@@ -57,12 +72,11 @@ Custom styles for this template
 					<a class="navbar-brand" th:href="@{/}">Home</a>
 				</div>
 
-				<!-- Collect the nav links, forms, and other content for toggling -->
+				Collect the nav links, forms, and other content for toggling
 				<div class="collapse navbar-collapse"
 					id="bs-example-navbar-collapse-1">
 					<ul class="nav navbar-nav">
-						<!-- <li class="active"><a th:href="@{/index}">Start Up <span class="sr-only"></span></a></li> -->
-						
+												
 						<li class="dropdown"><a th:href="@{/carshelf}" class="dropdown-toggle"
 							data-toggle="dropdown" role="button" aria-haspopup="true"
 							aria-expanded="false">Cars <span class="caret"></span></a>
@@ -91,8 +105,8 @@ Custom styles for this template
 							aria-expanded="false">Car Detail<span class="caret"></span></a>
 							<ul class="dropdown-menu">
 								<li><a th:href="@{/car/add}">Add a new Car</a></li>
-								<!-- <li><a href="#">Another action</a></li>
-								<li><a href="#">Something else here</a></li> -->
+								<li><a href="#">Another action</a></li>
+								<li><a href="#">Something else here</a></li>
 								<li role="separator" class="divider"></li>
 								<li><a th:href="@{/car/carList}">View your Car</a></li>
 							</ul></li> 
@@ -100,15 +114,53 @@ Custom styles for this template
 						<li><a sec:authorize="isAuthenticated()" th:href="@{/logout}">LogOut</a></li>	
 					</ul>
 				</div>
-				<!-- /.navbar-collapse -->
-				<!--   </div>/.container-fluid -->
+				
+				
 			</div>
-			<!-- /container -->
-		</nav>
+			
+		</nav> -->
 	</div>
 
 	<div th:fragment="footer">
-		<br />
+	
+	 <footer class="footer">
+           
+            <!-- <div class="footer__logo-box">
+                <picture class="footer__logo">
+                    <source srcset="img/logo-green-small-1x.png 1x, img/logo-green-small-2x.png 2x"
+                            media="(max-width: 37.5em)">
+                    <img srcset="img/logo-green-1x.png 1x, img/logo-green-2x.png 2x" alt="Full logo" src="img/logo-green-2x.png">
+                </picture>                
+            </div> -->
+
+            <div class="row_foot">
+                <div class="col-1-of-2">
+                    <div class="footer__navigation">
+                        <ul class="footer__list">
+                            <li class="footer__item"><a href="#" class="footer__link">COMPANY</a></li>
+                            <li class="footer__item"><a href="#" class="footer__link">CONTACT US</a></li>
+                            <li class="footer__item"><a href="#" class="footer__link">CARRIERS</a></li>
+                            <li class="footer__item"><a href="#" class="footer__link">PRIVACY POLICY</a></li>
+                            <li class="footer__item"><a href="#" class="footer__link">TERMS</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-1-of-2">
+                    <p class="footer__copyright">
+                        Built by <a href="#" class="footer__link">ComeHomeCar</a> to help you drive your dream, passion and beauty, <a href="#" class="footer__link">Explore Services</a>.
+                        Copyright &copy; by ComeHomeCar. 
+                        <br/>
+                        <br/>
+                        You are 100% allowed to use this webpage for both personal
+                     and commercial use, but NOT to claim it as your own design. A credit to the original author, Jonas
+                     Schmedtmann, is of course highly appreciated!                      
+                    </p>                     
+                    
+                </div>
+            </div>
+        </footer>  	
+	
+		<!-- <br />
 		<br />
 		<footer>
 			<div class="row">				
@@ -155,19 +207,10 @@ Custom styles for this template
 					<li><a href="#">Site Map</a></li>
 				</ul>
 			</div>
-		</div>
+		</div> -->
 	</div>
 
-	<div th:fragment="body-bottom-scripts">
-		<!-- <script th:src="@{/js/jquery.min.js}"></script>
-		<script th:src="@{/js/bootstrap.min.js}"></script>
-
-		<script th:src="@{/js/scripts.js}"></script>
-
-		data table
-		<script th:src="@{/js/jquery.dataTables.min.js}"></script>
-		<script th:src="@{/js/dataTables.bootstrap.min.js}"></script> -->
-		
+	<div th:fragment="body-bottom-scripts">		
 	<script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.js"></script>
  	<script type="text/javascript" src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>	
 	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/bootbox.js/4.4.0/bootbox.min.js"></script>

@@ -4,7 +4,7 @@
 <head th:replace="common/header :: common-header" />
 
 <body>
-	<div th:replace="common/header :: navbar" />
+	<div th:replace="common/header :: navbar"></div>
 
 	<div class="container">
 		<div class="row" style="margin-bottom: -100px;">
@@ -20,11 +20,12 @@
 			style="position: absolute; width: 100%; height: 6px; background-color: #333; z-index: -1; margin-top: -80px;" />
 		
 
-		<div class="row" style="margin-top: 10px;">
+		<div class="row" style="margin-top: 1rem;">
 			<form th:action="@{/checkout}" method="post">
-
+                <input type="hidden" name="barterActive" th:value="${barterActive}"/>
+			
 				<!-- Left Panel -->
-				<div class="col-xs-4">
+				<div class="col-md-4">
 					<div class="panel panel-default">
 						<div class="panel-body">
 							<button type="submit" class="btn btn-warning btn-block">Place
@@ -36,25 +37,25 @@
 							<hr />
 							<h3>Order Summary</h3>
 							<div class="row">
-								<div class="col-xs-7 text-left">Total before tax:</div>
-								<div class="col-xs-5 text-right">
+								<div class="col-md-7 col-xs-6 text-left">Total before tax:</div>
+								<div class="col-md-5 col-xs-6 text-right">
 									$<span th:text="${shoppingCart.grandTotal}"></span>
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-xs-7 text-left">Estimated tax:</div>
-								<div class="col-xs-5 text-right">
+								<div class="col-md-7 col-xs-6 text-left">Estimated tax:</div>
+								<div class="col-md-5 col-xs-6 text-right">
 									$<span th:with="tax=${shoppingCart.grandTotal*0.06}"
 											th:text="${#numbers.formatDecimal(tax, 0 ,2)}"></span>
 								</div>
 							</div>
 							<div class="row">
-								<div class="col-xs-7 text-left">
+								<div class="col-md-7 col-xs-6 text-left">
 									<h3 style="color: darkred;">
 										<strong>Order Total: </strong>
 									</h3>
 								</div>
-								<div class="col-xs-5 text-right">
+								<div class="col-md-5 col-xs-6 text-right">
 									<h3>
 										<strong style="color: darkred;">$<span
 											th:with="total=${shoppingCart.grandTotal+shoppingCart.grandTotal*0.06}"
@@ -69,7 +70,7 @@
 				</div>
 
 				<!-- Checkout Info -->
-				<div class="col-xs-8">
+				<div class="col-md-8">
 					<div th:if="${missingRequiredField}">
 						<h5 class="alert alert-warning">There are some fields
 							missing. Field with * is required.</h5>
@@ -126,7 +127,7 @@
 									</div>
 
 									<div class="row">
-										<div class="col-xs-4">
+										<div class="col-md-4">
 											<div class="form-group">
 												<label for="shippingCity">* City</label> <input type="text"
 													class="form-control" id="shippingCity"
@@ -135,7 +136,7 @@
 													th:value="${shippingAddress.shippingAddressCity}" />
 											</div>
 										</div>
-										<div class="col-xs-4">
+										<div class="col-md-4">
 											<div class="form-group">
 												<label for="shippingState">* State</label> <select
 													id="shippingState" class="form-control"
@@ -149,7 +150,7 @@
 												</select>
 											</div>
 										</div>
-										<div class="col-xs-4">
+										<div class="col-md-4">
 											<div class="form-group">
 												<label for="shippingZipcode">* Zipcode</label> <input
 													type="text" class="form-control" id="shippingZipcode"
@@ -160,7 +161,7 @@
 										</div>
 									</div>
 									<a data-toggle="collapse" data-parent="#accordion"
-										class="btn btn-warning pull-right" href="#paymentInfo">Next</a>
+										class="btn btn-warning pull-right btn-warning_checkout" id="btn_blue" href="#paymentInfo">Next</a>
 								</div>
 							</div>
 						</div>
@@ -196,7 +197,7 @@
 
 									<!-- Credit Card Information -->
 									<div class="row">
-										<div class="col-xs-12">
+										<div class="col-md-12">
 											<img th:src="@{/image/creditcard.png}" class="img-responsive" /><br />
 											<div class="form-group">
 												<label for="cardType">* Select Card Type: </label> <select
@@ -229,11 +230,11 @@
 									</div>
 
 									<div class="row">
-										<div class="col-xs-7">
+										<div class="col-md-7">
 											<div class="form-group">
 												<label>* Expiration Date</label>
 												<div class="row">
-													<div class="col-xs-6">
+													<div class="col-md-6">
 														<select class="form-control" name="expiryMonth"
 															required="required" th:value="${payment.expiryMonth}">
 															<option disabled="disabled">-- Month --</option>
@@ -251,7 +252,7 @@
 															<option value="12">Dec (12)</option>
 														</select>
 													</div>
-													<div class="col-xs-6">
+													<div class="col-md-6">
 														<select class="form-control" name="expiryYear"
 															th:value="${payment.expiryYear}">
 															<option disabled="disabled">-- Year --</option>
@@ -273,7 +274,7 @@
 												</div>
 											</div>
 										</div>
-										<div class="col-xs-5">
+										<div class="col-md-5">
 											<div class="form-group">
 												<label for="cardCVC">CV Code</label> <input id="cardCVC"
 													type="tel" class="form-control" name="cvc"
@@ -312,7 +313,7 @@
 									</div>
 
 									<div class="row">
-										<div class="col-xs-4">
+										<div class="col-md-4">
 											<div class="form-group">
 												<label for="billingCity">* City</label> <input type="text"
 													class="form-control billingAddress" id="billingCity"
@@ -321,7 +322,7 @@
 													th:value="${billingAddress.billingAddressCity}" />
 											</div>
 										</div>
-										<div class="col-xs-4">
+										<div class="col-md-4">
 											<div class="form-group">
 												<label for="billingState">* State</label> <select
 													id="billingState" class="form-control billingAddress"
@@ -335,7 +336,7 @@
 												</select>
 											</div>
 										</div>
-										<div class="col-xs-4">
+										<div class="col-md-4">
 											<div class="form-group">
 												<label for="billingZipcode">* Zipcode</label> <input
 													type="text" class="form-control billingAddress" id="billingZipcode"
@@ -347,7 +348,7 @@
 									</div>
 
 									<a data-toggle="collapse" data-parent="#accordion"
-										class="btn btn-warning pull-right" href="#reviewItems">Next</a>
+										class="btn btn-warning pull-right btn-warning_checkout" id="btn_blue_2" href="#reviewItems">Next</a>
 								</div>
 							</div>
 						</div>
@@ -375,13 +376,13 @@
 									</div>
 
 									<div class="row">
-										<div class="col-xs-8">
+										<div class="col-md-8">
 											<h4>Products</h4>
 										</div>
-										<div class="col-xs-2">
+										<div class="col-md-2">
 											<h4>Price</h4>
 										</div>
-										<div class="col-xs-2">
+										<div class="col-md-2">
 											<h4>Qty</h4>
 										</div>
 									</div>
@@ -389,14 +390,14 @@
 									<!-- display products in cart -->
 									<div class="row">  <!--  th:each="cartItem : ${cartItemList}" -->
 											<hr />
-											<div class="col-xs-2">
+											<div class="col-md-2">
 												<a th:href="@{/carDetail(id=${cartItem.car.id})}"> <img
 													class="img-responsive shelf-car"
 													th:src="${cartItem.car.profileImageUrl}"
 													style="width: 150px;" />
 												</a>
 											</div>
-											<div class="col-xs-6">
+											<div class="col-md-6">
 												<div style="margin-left: 50px;">
 													<a th:href="@{/carDetail?id=}+${cartItem.car.id}"><h4
 															th:text="${cartItem.car.title}"></h4></a>
@@ -414,21 +415,21 @@
 												</div>
 											</div>
 
-											<div class="col-xs-2">
+											<div class="col-md-2">
 												<h5 style="color: #db3208; font-size: large;">
 													$<span th:text="${cartItem.car.ourPrice}"
 														th:style="${cartItem.car.inStockNumber}==0? 'text-decoration: line-through' : ''"></span>
 												</h5>
 											</div>
 
-											<div class="col-xs-2">
+											<div class="col-md-2">
 												<h5 style="font-size: large;" th:text="${cartItem.qty}"></h5>
 											</div>
 										
 									</div>
 
 									<hr />
-									<h4 class="col-xs-12 text-right">
+									<h4 class="col-md-12 text-right">
 										<strong style="font-size: large;">Order Total (<span
 											th:text="${#lists.size(cartItemList)}"></span> items):
 										</strong> <span style="color: #db3208; font-szie: large;">$<span

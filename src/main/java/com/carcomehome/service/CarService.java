@@ -17,13 +17,13 @@ public interface CarService {
 	
 //	 List<Car> findNonBookedOnes(); // Added as an POC
 	 
-	List<Car> findAllCarsZipCode(Date pickUpDate, Date returnDate);	
+	List<Car> findAllCarsZipCode(Date pickUpDate, Date returnDate, String inputZip);	
 	
-	List<Car> findAllCarsCityAndState(Date pickUpDate, Date returnDate);	
+	List<Car> findAllCarsCityAndState(Date pickUpDate, Date returnDate, String inputCity, String inputState);	
 	
 	Car findOne(Long id);
 	
-	List<Car> findByCategory(String category);
+	List<Car> findBySegment(String segment);
 	
 	List<Car> blurrySearch(String title);
 	

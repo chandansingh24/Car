@@ -41,6 +41,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			"/carshelf",
 			"/carDetail/**",
 			"/searchByCategory",
+			"/reservationConfirmation",
+			"/reservationConfirmationBarter",
+			"/reservationCancel",
 			"/searchCar",
 			"/index"
 			};

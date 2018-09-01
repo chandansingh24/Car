@@ -20,94 +20,92 @@
 		<!-- <hr
 			style="position: relative; width: 100%; height: 6px; background-color: #F7B633; z-index: -1; margin-top: -80px;" /> -->
 
-      <!--   Search Form Added -->
-      
-          <form th:action="@{/carshelfDateImplementation}" method ="get">
-				<div class="form-row">
-				
-				     <div class="form-group col-md-2">
-						<label for="inputZip">Zip</label> <input type="text"
-							class="form-control" id="inputZip" name="inputZip"/>
-					</div>
+		<!--   Search Form Added -->
+
+    <div class="row">		
+           <form th:action="@{/carshelfDateImplementation}" method="get">
+				<div class="form-group col-md-1 zip_form-group">
+					<label for="inputZip">Zip</label> <input type="text"
+						class="form-control" id="inputZip" name="inputZip" />	
 					
-					<div class="form-group col-md-1">					   			
-						 <label style="margin-top:30px; margin-left:15px">OR</label>  
-					</div>
-				
-					<div class="form-group col-md-5">
-						<label for="inputCity">City</label> <input type="text"
-							class="form-control" id="inputCity" name="inputCity"/>
-					</div>
-					
-					<div class="form-group col-md-4">
-						<label for="inputState">State</label> <select id="inputState"
-							class="form-control">
-							<option selected>Choose...</option>
-							<option>...</option>
-						</select>
-					</div>					
 				</div>
 
-			<div class="form-row">			
-			<div class="form-group col-md-4">	
-			<label for="startDate">Pick Up Date</label><input type="date" class="form-control" 
-			     id="startDate" name="startDate" placeholder="Start Date" />						
-			</div>
-			
-			<div class="form-group col-md-4">
-			<label for="endDate">Return Date</label><input type="date" class="form-control" 
-			     id="returnDate" name="returnDate" placeholder="End Date" />			
-			</div>
-			
-			<div class="form-group col-md-4">
-			<button type="submit" class="btn btn-success" style="margin-top: 25px; width: 350px">Search   Car</button>			
-			</div>			
-			</div>
-		</form>					
-		
-		
-		<div class="row" style="margin-top: 100px;">
-			 <div class="col-xs-3">
-				 <h3>
-					<label for="category">Category</label>
-				</h3>
-				<div class="list-group" id="category">
-					<a th:href="@{/carshelf(category='all')}"
-						th:classappend="${activeAll}? 'active'" class="list-group-item">All</a>
-					<a th:href="@{/searchByCategory(category='Hatchback')}"
-						th:classappend="${activeHatchback}? 'active'"
-						class="list-group-item">Hatchback</a>
-						 <a
-						th:href="@{/searchByCategory(category='Sedan')}"
-						th:classappend="${activeSedan}? 'active'"
-						class="list-group-item">Sedan</a> 
-						<a
-						th:href="@{/searchByCategory(category='Coupe')}"
-						th:classappend="${activeCoupe}? 'active'"
-						class="list-group-item">Coupe</a>
-						 <a
-						th:href="@{/searchByCategory(category='Convertible')}"
-						th:classappend="${activeConvertible}? 'active'"
-						class="list-group-item">Convertible</a>
-						 <a
-						th:href="@{/searchByCategory(category='Tourer &amp; Series')}"
-						th:classappend="${activeTourerSeries}? 'active'"
-						class="list-group-item">Tourer &amp; Series</a>
-						  <a
-						href="#" th:classappend="test"
-						class="list-group-item">Organization</a>  
-						
+				 <div class="form-group col-md-1 orZipCity">
+					<label class="orZipCityLabel">OR</label>
 				</div> 
-			</div> 			
-			
-			
-			<div class="col-xs-9">
-				<div th:if="${emptyList}">
-					<h5 style="font-style: italic;">Oops, no result is found. Try
-						something else or try again later.</h5>
+
+				<div class="form-group col-md-2">
+					<label for="inputCity">City</label> <input type="text"
+						class="form-control" id="inputCity" name="inputCity" />
 				</div>
 
-				<table border="0" id="carList">
+				<div class="form-group col-md-1">
+					<label for="inputState">State</label> <select id="inputState"
+						class="form-control">
+						<option selected>State</option>
+						<option>...</option>
+					</select>
+				</div>
+			
+				<div class="form-group col-md-2">
+					<label for="startDate">Pick Up Date</label><input type="date"
+						class="form-control" id="startDate" name="startDate"
+						placeholder="Start Date" />
+				</div>
+
+				<div class="form-group col-md-2">
+					<label for="endDate">Return Date</label><input type="date"
+						class="form-control" id="returnDate" name="returnDate"
+						placeholder="End Date" />
+				</div>
+
+				<div class="form-group col-md-2">
+					<button type="submit" class="btn btn-success"
+						style="margin-top: 25px; letter-spacing:1px">Search Car</button>
+				</div>
+				
+				<div class="form-group col-md-1">					
+				</div>
+				</form>			
+			    </div>
+		
+
+
+		<div class="row row_carSearch">
+			<div class="col-md-3">
+				<h3>
+					<label for="segment">Segment</label>
+				</h3>
+				<div class="list-group" id="segment">
+					<a th:href="@{/carshelf(segment='all')}"
+						th:classappend="${activeAll}? 'active'" class="list-group-item">All Cars</a>
+					<a th:href="@{/searchBySegment(segment='commuterCar')}"
+						th:classappend="${activecommuterCar}? 'active'"
+						class="list-group-item">Commuter</a> <a
+						th:href="@{/searchBySegment(segment='sports &amp; Race')}"
+						th:classappend="${activesportsRace}? 'active'" class="list-group-item">Sports
+									&amp; Race</a>
+					<a th:href="@{/searchBySegment(segment='luxury')}"
+						th:classappend="${activeluxury}? 'active'" class="list-group-item">Luxury</a>
+					<a th:href="@{/searchBySegment(segment='classic &amp; antique')}"
+						th:classappend="${activeclassicantique}? 'active'"
+						class="list-group-item">Classic &amp; Antique</a> <a
+						th:href="@{/searchBySegment(segment='motorCycle')}"
+						th:classappend="${activemotorCycle}? 'active'"
+						class="list-group-item">Motorcycle</a> 
+						<a th:href="@{/searchBySegment(segment='organizantion')}"
+						th:classappend="${activeorganizantion}? 'active'" class="list-group-item">Organization</a>
+				</div>
+			</div>
+
+
+			<div class="col-md-9">
+				<div th:if="${emptyList}">
+					<h5 style="font-style: italic;">Sorry, no result is found. Try
+						with another zipcode or nearby city.</h5>
+				</div>
+
+				<table id="carList">   <!--  border="0" -->
 					<thead>
 						<tr>
 							<th></th>
@@ -118,27 +116,33 @@
 							<td>
 								<div th:if="${car != null}">
 									<div class="row" style="margin-bottom: 50px;">
-										<div class="col-xs-4">
+										<div class="col-md-4">
 											<a th:href="@{/carDetail?id=}+${car.id}"><img
 												class="img-responsive shelf-car"
-												th:src="${car.profileImageUrl}" /></a>
+												th:src="${car.profileImageUrl}" /></a> <a
+												th:href="@{/carDetail?id=}+${car.id}"><span
+												style="font-size: 1em; text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.3), 0px 2px 2px rgba(0, 0, 0, 0.1), 0px 4px 4px rgba(0, 0, 0, 0.1); color: #2f3e75;">Barter
+													Price: <span
+													style="font-size: 18px; text-shadow: 0px 2px 1px rgba(0, 0, 0, 0.1), 0px 2px 2px rgba(0, 0, 0, 0.1), 0px 1px 1px rgba(0, 0, 0, 0.1); color: #ff5722;">$<span
+														th:text="${car.barterActive} ? ${#numbers.formatDecimal(car.barterPrice, 0 , 'COMMA', 2, 'POINT')} : 'NA'"></span></span>
+											</span></a><em> *Per day</em>
 										</div>
-										<div class="col-xs-8">
-											<a th:href="@{/carDetail?id=}+${car.id}"><h4
-													th:text="${car.title}"></h4></a> <span
-												th:text="${car.manufacturingDate}"></span>
-											<p th:text="${car.owner}"></p>
+										<div class="col-md-8">
+											<a th:href="@{/carDetail?id=}+${car.id}"><strong
+												th:text="${car.title}"></strong></a><br /> <span
+												th:text="${car.company}"></span><br /> <a
+												th:href="@{/carDetail?id=}+${car.id}"><span
+												th:text="${#strings.capitalize(car.makeAndModel)}"></span></a><br />
+											<span th:text="${#strings.capitalize(car.category)}"></span><br />
 											<a th:href="@{/carDetail?id=}+${car.id}"><span
-												th:text="${#strings.capitalize(car.model)}"></span></a><br/>
-											<!-- <span th:text="${car.numberOfOccupancy}"> <span>People</span> </span><br/>  -->                                                
-											<a th:href="@{/carDetail?id=}+${car.id}"><span
-												style="font-size: x-large; color: #db3208;">$<span
+												style="font-size: 18px; color: #ff5722;">$<span
 													th:text="${#numbers.formatDecimal(car.ourPrice, 0 , 'COMMA', 2, 'POINT')}"></span></span></a>
 
 											<span style="text-decoration: line-through;">$<span
-												th:text="${#numbers.formatDecimal(car.listPrice, 0 , 'COMMA', 2, 'POINT')}"></span></span>
-
-											<p th:utext="${#strings.abbreviate(car.description, 500)}"></p>
+												th:text="${#numbers.formatDecimal(car.listPrice, 0 , 'COMMA', 2, 'POINT')}"></span></span><em> Per day</em>
+                                             
+                                            
+											 <p th:utext="${#strings.abbreviate(car.description, 50)}"></p> 
 										</div>
 									</div>
 								</div>
@@ -150,7 +154,7 @@
 		</div>
 	</div>
 	<!-- end of container -->
-	<div th:replace="common/header :: footer" ></div>
+	<div th:replace="common/header :: footer"></div>
 
 	<div th:replace="common/header :: body-bottom-scripts"></div>
 

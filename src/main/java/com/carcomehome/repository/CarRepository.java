@@ -11,7 +11,7 @@ import com.carcomehome.domain.Car;
 
 
 public interface CarRepository extends CrudRepository<Car, Long>  {
-	 List<Car> findByCategory(String category); 
+	 List<Car> findBySegment(String segment); 
 	 
 	 List<Car> findByTitleContaining(String title); 	 
 	 
@@ -31,31 +31,30 @@ public interface CarRepository extends CrudRepository<Car, Long>  {
 	 		"WHERE b.car_id is null", nativeQuery = true)
 	 List<Car> findNonBookedOnes();*/
 	 
-	
 	 
 	 @Query(value="SELECT cr.*\n" + 
 		"FROM `carcomehome`.`car` AS cr\n" + 
 		"LEFT JOIN (SELECT b.* \n" + 
 		"           FROM `carcomehome`.`reservation` AS b \n" + 
-		"           WHERE (b.pick_up_date > :pickUpDate AND b.return_date < :returnDate) OR\n" + 
-		"                 (b.pick_up_date < :pickUpDate AND b.return_date > :returnDate) OR\n" + 
-		"                 (b.pick_up_date < :returnDate AND b.return_date > :returnDate) OR \n" + 
-		"                 (b.pick_up_date < :pickUpDate AND b.return_date > :pickUpDate)\n" + 
+		"           WHERE (b.pick_up_date >= :pickUpDate AND b.return_date <= :returnDate) OR\n" + 
+		"                 (b.pick_up_date <= :pickUpDate AND b.return_date >= :returnDate) OR\n" + 
+		"                 (b.pick_up_date <= :returnDate AND b.return_date >= :returnDate) OR \n" + 
+		"                 (b.pick_up_date <= :pickUpDate AND b.return_date >= :pickUpDate)\n" + 
 		"         )  AS b ON cr.id = b.car_id\n" + 
-		"WHERE b.car_id is null AND (cr.total_weight > 30)", nativeQuery = true)
-     List<Car> findNonBookedCarsZipCode(@Param("pickUpDate") Date pickUpDate, @Param("returnDate") Date returnDate);
+		"WHERE b.car_id is null AND (cr.business_address_zipcode = :inputZip)", nativeQuery = true)
+     List<Car> findNonBookedCarsZipCode(@Param("pickUpDate") Date pickUpDate, @Param("returnDate") Date returnDate, @Param("inputZip") String inputZip);
 	 
 	 
 	 @Query(value="SELECT cr.*\n" + 
 				"FROM `carcomehome`.`car` AS cr\n" + 
 				"LEFT JOIN (SELECT b.* \n" + 
 				"           FROM `carcomehome`.`reservation` AS b \n" + 
-				"           WHERE (b.pick_up_date > :pickUpDate AND b.return_date < :returnDate) OR\n" + 
-				"                 (b.pick_up_date < :pickUpDate AND b.return_date > :returnDate) OR\n" + 
-				"                 (b.pick_up_date < :returnDate AND b.return_date > :returnDate) OR \n" + 
-				"                 (b.pick_up_date < :pickUpDate AND b.return_date > :pickUpDate)\n" + 
+				"           WHERE (b.pick_up_date >= :pickUpDate AND b.return_date <= :returnDate) OR\n" + 
+				"                 (b.pick_up_date <= :pickUpDate AND b.return_date >= :returnDate) OR\n" + 
+				"                 (b.pick_up_date <= :returnDate AND b.return_date >= :returnDate) OR \n" + 
+				"                 (b.pick_up_date <= :pickUpDate AND b.return_date >= :pickUpDate)\n" + 
 				"         )  AS b ON cr.id = b.car_id\n" + 
-				"WHERE b.car_id is null AND (cr.number_of_doors = 2 AND cr.number_of_occupancy > 1)", nativeQuery = true)
-	List<Car> findNonBookedCarsCityAndState(@Param("pickUpDate") Date pickUpDate, @Param("returnDate") Date returnDate);
+				"WHERE b.car_id is null AND (cr.business_address_city = :inputCity AND cr.business_address_state = :inputState)", nativeQuery = true)
+	List<Car> findNonBookedCarsCityAndState(@Param("pickUpDate") Date pickUpDate, @Param("returnDate") Date returnDate, @Param("inputCity") String inputCity, @Param("inputState") String inputState);
 	 
 }

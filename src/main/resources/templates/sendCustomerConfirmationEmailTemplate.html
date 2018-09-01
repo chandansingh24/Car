@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+
+<!-- Bootstrap core CSS -->
+<!-- <link href="/css/bootstrap.min.css" rel="stylesheet" /> -->
+<link rel="stylesheet" type="text/css"
+	href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css" />
+
+<!-- <link href="/css/non-responsive.css" rel="stylesheet" /> -->
+<link href="/css/font-awesome.min.css" rel="stylesheet" />
+
+<!-- Custom styles for this template -->
+<link href="/css/style.css" rel="stylesheet" />
+
+<style>
+table {
+	border-collapse: collapse;
+}
+
+table, th, td {
+	border: 1px solid black;
+}
+</style>
+</head>
+<body>
+	<p>
+		Dear <span th:text="${user.firstName}"></span>,
+	</p>
+	<p>We have created an order Id for your request and sent it for
+		acceptance to vehicle owner, please reach out on the contact no. if
+		there's delay in acceptance, once the request is accepted/rejected you
+		will be notified through the email confirmation.</p>
+
+	<p>
+		Booking period(Dates): <strong><span
+			th:text="${#calendars.format(pickUpDate,'MM/dd')}"></span><em>
+				to </em> <span th:text="${#calendars.format(returnBackDate,'MM/dd')}"></span></strong> <br/>
+		Car Owner's Name: <span th:text="${ownerName}"></span> <br/>
+		Contact Phone No: <span th:text="${contactPhoneNo}? ${contactPhoneNo} : 'Phone No. not provided'"></span> 		
+	</p>
+
+	<p>
+		Request order number is: <strong>#<span th:text="${order.id}"></span></strong>
+	</p>
+
+	<h2>
+		Request Detail for order #<span th:text="${order.id}"></span>
+	</h2>
+	<hr />
+
+	<h3>
+		<strong>Order Summary</strong>
+	</h3>
+	<table>
+		<thead>
+			<tr>
+				<td><strong>Vehicle Name</strong></td>
+				<td class="text-center"><strong>Price</strong></td>
+				<td class="text-center"><strong></strong></td>
+				<td class="text-right"><strong>Total</strong></td>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="cartItem : ${cartItemList}">
+				<td><span data-th-text="${cartItem.car.title}"></span></td>
+				<td class="text-center" data-th-text="${cartItem.car.ourPrice}"></td>
+				<td class="text-center"></td>
+				<!-- data-th-text="${cartItem.qty}" -->
+				<td class="text-right" data-th-text="${cartItem.subtotal}"></td>
+			</tr>
+			<tr>
+				<td class="highrow"></td>
+				<td class="highrow"></td>
+				<td class="highrow text-center"><strong>Subtotal</strong></td>
+				<td class="highrow text-right" data-th-text="${order.orderTotal}"></td>
+			</tr>
+			<tr>
+				<td class="emptyrow"></td>
+				<td class="emptyrow"></td>
+				<td class="emptyrow text-center"><strong>Tax</strong></td>
+				<td class="emptyrow text-right"
+					data-th-text="${#numbers.formatDecimal(order.orderTotal*0.06,0,2)}"></td>
+			</tr>
+			<tr>
+				<td class="emptyrow"><i class="fa fa-barcode iconbig"></i></td>
+				<td class="emptyrow"></td>
+				<td class="emptyrow text-center"><strong>Total</strong></td>
+				<td th:with="total=${order.orderTotal+order.orderTotal*0.06}"
+					data-th-text="${#numbers.formatDecimal(total, 0, 2)}"
+					class="emptyrow text-right"></td>
+			</tr>
+		</tbody>
+	</table>
+
+	<br />
+	<p>Regards,</p>
+	<div>ComeHomeCar</div>
+</body>
+</html>

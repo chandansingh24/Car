@@ -22,7 +22,7 @@ public class Order {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	private Date orderDate;
-	private Date shippingDate;
+//	private Date shippingDate;
 	private String shippingMethod;
 	private String orderStatus;
 	private BigDecimal orderTotal;
@@ -38,6 +38,9 @@ public class Order {
 	
 	@OneToOne(cascade=CascadeType.ALL)
 	private Payment payment;
+	
+	@OneToOne(mappedBy="order",cascade= {CascadeType.MERGE, CascadeType.PERSIST, CascadeType.DETACH, CascadeType.REFRESH})
+	private Reservation reservation;
 	
 	@ManyToOne
 	private User user;
@@ -58,14 +61,14 @@ public class Order {
 		this.orderDate = orderDate;
 	}
 
-	public Date getShippingDate() {
+	/*public Date getShippingDate() {
 		return shippingDate;
 	}
 
 	public void setShippingDate(Date shippingDate) {
 		this.shippingDate = shippingDate;
 	}
-
+*/
 	public String getShippingMethod() {
 		return shippingMethod;
 	}
@@ -114,8 +117,6 @@ public class Order {
 		this.payment = payment;
 	}
 	
-	
-
 	public BillingAddress getBillingAddress() {
 		return billingAddress;
 	}
@@ -124,13 +125,20 @@ public class Order {
 		this.billingAddress = billingAddress;
 	}
 
+	
+	public Reservation getReservation() {		
+		return reservation;
+	}
+	
+	public void setReservation(Reservation reservation) {
+		this.reservation = reservation;
+	}	
+	
 	public User getUser() {
 		return user;
 	}
 
 	public void setUser(User user) {
 		this.user = user;
-	}
-	
-	
+	}	
 }

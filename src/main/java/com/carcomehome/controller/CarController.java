@@ -2,6 +2,7 @@ package com.carcomehome.controller;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.Collections;
 import java.util.List;
 
 import org.slf4j.Logger;
@@ -20,6 +21,7 @@ import com.carcomehome.domain.User;
 import com.carcomehome.service.CarService;
 import com.carcomehome.service.UserService;
 import com.carcomehome.service.impl.S3Service;
+import com.carcomehome.utility.USConstants;
 
 
 
@@ -47,6 +49,10 @@ public class CarController {
 	public String addCar(Model model) {
 		Car car = new Car();
 		model.addAttribute("car", car);
+		
+		List<String> stateList = USConstants.listOfUSStatesCode;
+		Collections.sort(stateList);
+		model.addAttribute("stateList", stateList);
 		
 		return "addCar";				
 	}
@@ -102,10 +108,14 @@ public class CarController {
 		return "carInfo";
 	}
 	
-	@RequestMapping("/updateCar")
+	@RequestMapping(value="/updateCar", method=RequestMethod.GET)
 	public String updateCar(@RequestParam("id") Long id, Model model) {
 		Car car = carService.findOne(id);
 		model.addAttribute("car", car);
+		
+		List<String> stateList = USConstants.listOfUSStatesCode;
+		Collections.sort(stateList);
+		model.addAttribute("stateList", stateList);
 		
 		return "updateCar";
 	}

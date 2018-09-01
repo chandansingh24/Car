@@ -11,226 +11,241 @@
 			<form class="form-horizontal" th:action="@{/car/updateCar}" method="post"
 				enctype="multipart/form-data">
 				<fieldset>
-					<legend class="center-block">
+					<legend class="center-block" style="text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1), 0px 1px 1px rgba(0, 0, 0, 0.1), 0px 1px 1px rgba(0, 0, 0, 0.1);">
 						Update car Information<span style="font-size: small"> * is a
 							required field</span>
-					</legend>
+					</legend> 
 					
-					<input hidden="hidden" name="id" th:value="${car.id}" />
+					<input hidden="hidden" name="id" th:value="${car.id}"/>					
+					<input hidden="hidden" th:name="profileImageUrl" th:value="${car.profileImageUrl}"/>		
 					
-					<input hidden="hidden" th:name="profileImageUrl" th:value="${car.profileImageUrl}" />
+					<div class="col-md-9 col-md-offset-1 col-xs-11 col-xs-offset-1"
+						style="background-color: #f2f9f1;">
 
-
-					<!-- title -->
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="title">* Title</label>
-
-						<div class="col-md-8">
-							<input type="text" name="title" class="form-control" id="title"
-								th:value="${car.title}" required="required" placeholder="Title" />
-							<span class="help-block">Title of the car</span>
+						<!-- title -->
+						<div class="form-group">
+							<label for="title">*Title</label> <input type="text" name="title"
+								class="form-control" id="title" th:value="${car.title}"
+								required="required" placeholder="Title describing the car best" />
 						</div>
-					</div>
 
-					<!-- owner -->
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="owner">*
-							Owner</label>
-						<div class="col-md-8">
-							<input type="text" name="owner" class="form-control" id="owner"
-								th:value="${car.owner}" required="required"
-								placeholder="owner" /> <span class="help-block">Owner
-								of the Car</span>
+						<!-- company -->
+						<div class="form-group">
+							<label for="company">*Company</label> <input type="text"
+								name="company" class="form-control" id="company"
+								th:value="${car.company}" required="required"
+								placeholder="Car Manufacturing Company" />
 						</div>
-					</div>
 
-					<!-- company -->
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="company">Company</label>
-						<div class="col-md-8">
-							<input type="text" name="company" class="form-control"
-								id="company" th:value="${car.company}"
-								placeholder="Company" /> <span class="help-block">Manufacturer
-								</span>
+
+						<!-- MakeandModel -->
+						<div class="form-group">
+							<label for="MakeandModel">*Make &amp; Model</label> <input
+								type="text" name="makeAndModel" class="form-control"
+								id="makeAndModel" th:value="${car.makeAndModel}"
+								required="required" placeholder="Make &amp; Model" />
 						</div>
-					</div>
 
-					<!-- manufacturing date -->
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="manufacturingDate">Manufacturing
-							Date</label>
-						<div class="col-md-8">
-							<input type="date" class="form-control" id="manufacturingDate"
-								name="manufacturingDate" th:value="${car.manufacturingDate}"
-								placeholder="Manufacturing Date" /> <span class="help-block">Manufacturing
-								Date of the Car</span>
+						<!-- feature -->
+						<div class="form-group">
+							<label for="feature">*Feature</label> <input type="text"
+								name="feature" class="form-control" id="feature"
+								th:value="${car.feature}" required="required"
+								placeholder="Feature" />
 						</div>
-					</div>
 
-					<!-- Number of Doors -->
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="numberOfDoors">Number of Doors</label>
-						<div class="col-md-8">
-							<select th:value="${car.numberOfDoors}" id="numberOfDoors" name="numberOfDoors"
-								class="form-control">
-								<option value="2">Two</option>
-								<option value="4">Four</option>
-							</select>
-						</div>
-					</div>
-
-					<!-- category -->
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="category">*
-							Category</label>
-						<div class="col-md-8">
-							<select th:value="${car.category}" id="category" name="category"
+						<!-- category -->
+						<div class="form-group">
+							<label for="category">*Category</label> <select
+								th:value="${car.category}" id="category" name="category"
 								class="form-control">
 								<option value="" selected="selected" disabled="disabled">Please
 									select an option...</option>
-								<option value="Hatchback"
-									th:selected="(${car.category}=='Hatchback')">Hatchback</option>
-								<option value="Sedan"
-									th:selected="(${car.category}=='Sedan')">Sedan</option>
-								<option value="Coupe"
-									th:selected="(${car.category}=='Coupe')">Coupe</option>
-								<option value="Convertible"
-									th:selected="(${car.category}=='Convertible')">Convertible</option>
-								<option value="Tourer &amp; Series"
-									th:selected="(${car.category}=='Tourer &amp; Series')">Tourer
-									&amp; Series</option>
+								<option value="convertible" th:selected="(${car.category}=='convertible')">Convertible</option>
+								<option value="coupe" th:selected="(${car.category}=='coupe')">Coupe</option>
+								<option value="crossover" th:selected="(${car.category}=='crossover')">Crossover</option>
+								<option value="hatchback" th:selected="(${car.category}=='hatchback')">Hatchback</option>
+								<option value="minivan" th:selected="(${car.category}=='minivan')">MiniVan</option>
+								<option value="sedan" th:selected="(${car.category}=='sedan')">Sedan</option>
+								<option value="suv" th:selected="(${car.category}=='suv')">SUV</option>
+								<option value="truck" th:selected="(${car.category}=='truck')">Truck</option>
+								<option value="wagon" th:selected="(${car.category}=='wagon')">Wagon</option>
 							</select>
 						</div>
-					</div>
 
-					<!-- Occupancy -->
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="occupancy">Passenger Occupancy</label>
-
-						<div class="col-md-8">
-							<input type="number" name="numberOfOccupancy" class="form-control"
-								id="occupancy" th:value="${car.numberOfOccupancy}"
-								placeholder="Occupancy" /> <span class="help-block">Passenger Occupancy
-								of the Car</span>
+						<!-- SeatingCapacity -->
+						<div class="form-group">
+							<label for="seatingCapacity">Seating Capacity</label> <input
+								type="number" name="seatingCapacity" class="form-control"
+								id="seatingCapacity" th:value="${car.seatingCapacity}"
+								placeholder="Seating Capacity" />
 						</div>
-					</div>
 
-					<!-- model -->
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="model">Model</label>
-						<div class="col-md-8">
-							<select th:value="${car.model}" id="model" name="model"
+						<!-- owner -->
+						<div class="form-group">
+							<label for="owner">*Owner's Name</label> <input type="text"
+								name="owner" class="form-control" id="owner"
+								th:value="${car.owner}" required="required"
+								placeholder="Your Name" />
+						</div>
+
+						<!-- Segment -->
+						<div class="form-group">
+							<label for="segment">*Segment</label> <select
+								th:value="${car.segment}" id="segment" name="segment"
 								class="form-control">
-								<option value="Classic Old">Classic Old</option>
-								<option value="Classic Vintage">Classic Vintage</option>
+								<option value="" selected="selected" disabled="disabled">Please
+									select an option...</option>
+								<option value="commuterCar"
+									th:selected="(${car.segment}=='commuterCar')">Commuter
+									Cars</option>
+								<option value="sports &amp; Race"
+									th:selected="(${car.segment}=='sports &amp; Race')">Sports
+									&amp; Race</option>
+								<option value="luxury" th:selected="(${car.segment}=='luxury')">Luxury</option>
+								<option value="classic &amp; antique"
+									th:selected="(${car.segment}=='classic &amp; antique')">Classic
+									&amp; Antique</option>
+								<option value="motorCycle"
+									th:selected="(${car.segment}=='motorCycle')">Motorcycle</option>
+								<!-- <option value="organizantion"
+									th:selected="(${car.segment}=='organizantion')">Organization</option> -->
 							</select>
 						</div>
-					</div>
 
-					<!-- Unique Identifaction-->
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="uniqueIdentification">Unique Characteristic</label>
-
-						<div class="col-md-8">
-							<input type="text" name="uniqueIdentification" class="form-control" id="uniqueIdentification"
-								th:value="${car.uniqueIdentification}" placeholder="Unique Characteristic" /> <span
-								class="help-block">Unique Characteristic of the Car</span>
-						</div>
-					</div>
-
-					<!-- Total Weight -->
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="totalWeight">Total
-							Weight</label>
-						<div class="col-md-8">
-							<div class="input-group">
-								<input th:value="${car.totalWeight}" type="number" step="0.01"
-									name="totalWeight" class="form-control" id="totalWeight"
-									placeholder="Total Weight" /> <span
-									class="input-group-addon">Ounces</span>
-							</div>
-							<span class="help-block">Total Weight of the Car</span>
-						</div>
-					</div>
-
-					<!-- list price -->
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="listPrice">List
-							Price</label>
-						<div class="col-md-8">
+						<!-- list price -->
+						<div class="form-group">
+							<label for="listPrice">*List Price</label>
 							<div class="input-group">
 								<span class="input-group-addon">$</span> <input
-									th:value="${car.listPrice}" type="number" name="listPrice" step="0.01"
-									class="form-control" id="listPrice" placeholder="List Price" />
+									th:value="${car.listPrice}" type="number" name="listPrice"
+									step="0.01" class="form-control" id="listPrice"
+									placeholder="List Price" />
 							</div>
-							<span class="help-block">List price of the Car</span>
 						</div>
-					</div>
 
-					<!-- our price -->
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="ourPrice">Our
-							Price</label>
-						<div class="col-md-8">
+						<!-- offered price -->
+						<div class="form-group">
+							<label for="ourPrice">*Offered Price</label>
 							<div class="input-group">
 								<span class="input-group-addon">$</span> <input
-									th:value="${car.ourPrice}" type="number" name="ourPrice" step="0.01"
-									class="form-control" id="ourPrice" placeholder="Our Price" />
+									th:value="${car.ourPrice}" type="number" name="ourPrice"
+									step="0.01" class="form-control" id="ourPrice"
+									placeholder="Our Price" />
 							</div>
-							<span class="help-block">Our price of the Car</span>
-						</div>
-					</div>
 
-					<!-- in stock number -->
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="inStockNumber">Number
-							in stock</label>
-						<div class="col-md-8">
-							<input th:value="${car.inStockNumber}" type="number"
-								name="inStockNumber" class="form-control" id="inStockNumber"
-								placeholder="Number of in-stock copies" /> <span
-								class="help-block">Number of in-stock copies</span>
 						</div>
-					</div>
 
-					<!-- status of car -->
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="status">Status</label>
-						<div class="col-md-8">
-							<label><input value="true" type="radio" name="active"
-								th:checked="${car.active}" /> Active </label> <label><input
-								value="false" type="radio" name="active" th:checked="${!car.active}"/>
-								Inactive </label> <span class="help-block">Whether the car is
-								active or inactive</span>
+						<!-- barter price -->
+						<div class="form-group">
+							<label for="barterPrice">Barter Price</label>
+
+							<div class="input-group">
+								<span class="input-group-addon">$</span> <input
+									th:value="${car.barterPrice}" type="number" name="barterPrice"
+									step="0.01" class="form-control" id="barterPrice"
+									placeholder="Barter Price" />
+							</div>
 						</div>
-					</div>
 
-					<!-- description -->
-					<div class="form-group">
-						<label class="col-md-2 control-label" for="description">Description</label>
-						<div class="col-md-8">
+						<!-- status of car -->
+						<div class="form-group">
+							<label class="col-md-3 control-label" for="status"
+								style="text-align: center;">Car Search Status</label>
+							<div class="col-md-7">
+								<label><input value="true" type="radio" name="active"
+									th:checked="${car.active}" /> Active </label> <label><input
+									value="false" type="radio" name="active" th:checked="${!car.active}"/> Inactive </label> <span
+									class="help-block">Whether the car is active or inactive
+									in business..</span>
+							</div>
+						</div>
+
+						<!--barter participation status of car -->
+						<div class="form-group">
+							<label class="col-md-3 control-label" for="barterStatus"
+								style="text-align: center;">Barter Participation</label>
+							<div class="col-md-7">
+								<label><input value="true" type="radio"
+									name="barterActive" th:checked="${car.barterActive}"/> Active </label> <label><input
+									value="false" type="radio" name="barterActive" th:checked="${!car.barterActive}"/> Inactive </label> <span
+									class="help-block">Whether the car participates in
+									barter exchange or not..</span>
+							</div>
+						</div>
+
+						<!-- description -->
+						<div class="form-group">
+							<label for="description">Description</label>
 							<textarea name="description" rows="5" class="form-control"
 								id="description" th:value="${car.description}" th:text="${car.description}"
 								placeholder="Description"></textarea>
-							<span class="help-block">Description of the car</span>
 						</div>
-					</div>
 
-					<!-- upload image -->
-					<div class="form-group">
-						<div class="col-md-2">
-							<label for="carImage">Upload car image</label>
+						<hr />
+						<!-- Address -->
+						<div class="form-group">
+							<label for="businessAddress">*Business Address</label> <input
+								type="text" class="form-control" id="businessAddress"
+								placeholder="Street Address" th:name="businessAddressStreet1"
+								required="required" th:value="${car.businessAddressStreet1}" />
+							<input type="text" class="form-control" id="businessAddress"
+								placeholder="Suite or House no."
+								th:name="businessAddressStreet2"
+								th:value="${car.businessAddressStreet2}" />
 						</div>
-						<div class="col-md-8">
-							<input id="carImage" type="file" name="file"/>
-						</div>
-					</div>
 
-					<div class="form-group">
-						<div class="col-md-2"></div>
-						<div class="col-md-8">
-							<button type="submit" class="btn btn-success">Update car</button>
-							<a class="btn btn-danger" th:href="@{/car/carInfo(id=${car.id})}">Cancel</a>
+						<div class="row">
+							<div class="col-md-4">
+								<div class="form-group">
+									<label for="businessCity">*City</label> <input type="text"
+										class="form-control" id="businessCity"
+										placeholder="Business City" th:name="businessAddressCity"
+										required="required" th:value="${car.businessAddressCity}" />
+								</div>
+							</div>
+							<div class="col-md-4">
+								<div class="form-group">
+									<label for="businessState">*State</label> <select
+										id="businessState" class="form-control"
+										th:name="businessAddressState"
+										th:value="${car.businessAddressState}" required="required">
+										<option value="" selected="selected" disabled="disabled">Please select a
+											state</option>
+										<option th:each="state : ${stateList}" th:text="${state}"
+											th:selected="(${car.businessAddressState}==${state})"></option>
+									</select>
+								</div>
+							</div>
+							<div class="col-xs-4">
+								<div class="form-group">
+									<label for="businessZipcode">*Zipcode</label> <input
+										type="text" class="form-control" id="businessZipcode"
+										placeholder="Zipcode"
+										th:name="businessAddressZipcode" required="required"
+										th:value="${car.businessAddressZipcode}" />
+								</div>
+							</div>
+						</div>
+						<hr />
+						<!-- upload image -->
+						<div class="form-group">
+							<div class="col-md-2">
+								<label for="carImage" style="color: #aa530e;"><em>Upload
+										Car Image</em></label>
+							</div>
+							<div class="col-md-8">
+								<input id="carImage" type="file" name="file"
+									th:value="${car.profileImageUrl}" />
+							</div>
+						</div>
+
+						<div class="form-group">
+						    <div class="col-md-12">						     
+							<button type="submit" class="btn btn-success"
+								style="width: 200px; letter-spacing: 1px;">Save Updates</button>
+							<a class="btn btn-danger" style="width: 200px; letter-spacing: 1px;" th:href="@{/}">Cancel</a>
+						   </div>
 						</div>
 					</div>
 				</fieldset>

@@ -18,6 +18,7 @@ import com.carcomehome.service.CarService;
 import com.carcomehome.service.CartItemService;
 import com.carcomehome.service.ShoppingCartService;
 import com.carcomehome.service.UserService;
+import com.carcomehome.utility.SearchDates;
 
 
 
@@ -38,6 +39,9 @@ public class ShoppingCartController {
 	@Autowired
 	private ShoppingCartService shoppingCartService;
 	
+	/*@Autowired
+	private SearchDates searchDates;*/
+	
 	@RequestMapping("/cart")
 	public String shoppingCart(Model model, Principal principal) {
 		User user = userService.findByUsername(principal.getName());
@@ -46,6 +50,9 @@ public class ShoppingCartController {
 		List<CartItem> cartItemList = cartItemService.findByShoppingCart(shoppingCart);
 		
 		shoppingCartService.updateShoppingCart(shoppingCart);
+		
+		model.addAttribute("pickUpDate", SearchDates.getPickUpDate());
+		model.addAttribute("returnBackDate", SearchDates.getReturnBackDate());
 		
 		model.addAttribute("cartItemList", cartItemList);
 		model.addAttribute("shoppingCart", shoppingCart);
@@ -62,10 +69,10 @@ public class ShoppingCartController {
 		User user = userService.findByUsername(principal.getName());
 		car = carService.findOne(car.getId());
 		
-		if (Integer.parseInt(qty) > car.getInStockNumber()) {
+		/*if (Integer.parseInt(qty) > car.getInStockNumber()) {
 			model.addAttribute("notEnoughStock", true);
 		return "forward:/carDetail?id="+car.getId();
-	}
+	}*/
 	
 	CartItem cartItem = cartItemService.addcarToCartItem(car, user, Integer.parseInt(qty));
 	model.addAttribute("addcarSuccess", true);
@@ -90,7 +97,7 @@ public class ShoppingCartController {
 	public String removeItem(@RequestParam("id") Long id) {
 		cartItemService.removeCartItem(cartItemService.findById(id));
 		
-		return "forward:/shoppingCart/cart";
+		return "redirect:/shoppingCart/cart";
 	}
 
 

@@ -3,122 +3,109 @@
 <head th:replace="common/header :: common-header" />
 
 <body>
-	<div th:replace="common/header :: navbar" />
+	<div th:replace="common/header :: navbar"></div>
 
 	<div class="container">
-		<div class="row" style="margin-bottom: -100px;">
-			<div class="col-xs-8">
-				<h2 class="section-headline">
-					<h2 class="section-headline">
-						<span
-							th:text="${user}? ${#strings.toUpperCase(user.username)} : 'Cars'"></span>
-					</h2>
-				</h2>
-			</div>
+		
+		<div class="row">
 			
-		</div>
-		<hr style="position: absolute; width:85%; height: 6px; background-color: #333; z-index: -1; margin-top: -80px;" />
-
-
-		<div class="row" style="margin-top: 10px;">
-			<div class="col-xs-12">
-				<div class="row">
-					<div class="col-md-6 text-left">
-						<a class="btn btn-warning" th:href="@{/carshelf}">Continue
-							Shopping</a>
-					</div>
-					<div class="col-md-6 text-right">
-						<a class="btn btn-primary"
-							th:href="@{/checkout(id=${shoppingCart.id})}">Check Out</a>
-					</div>
+			<a class="btn-text" th:href="@{/carshelf}"><i
+						class="fa fa-long-arrow-left" aria-hidden="true"></i>Back to Search</a>  	
+					
+					<br/>
+					<div th:if="${emptyCart}" class="alert alert-warning">Sorry,
+						no cars/motorbikes in garage, pick one you like from listing</div>
 					<br />
-					<div th:if="${notEnoughStock}" class="alert alert-warning">
-						Oops, some of the products don't have enough stock. Please update
-						product quantity.</div>
-					<div th:if="${emptyCart}" class="alert alert-warning">Oops,
-						your cart is empty. See if you can find what you like in the
-						carshelf and add them to cart.</div>
-
-					<br /> <br />
-					<div class="row">
-						<div class="col-md-6 ">
-							<h4 style="margin-left:70px;">Products</h4>
-						</div>
-						<div class="col-md-2">
-							<h4>Price</h4>
-						</div>
-						<div class="col-md-4 text-left">
-							<h4>Special Care</h4>
-						</div>
-					</div>
-
+					
 					<!--**************** display products in cart ****************-->
 
 					<div class="row" th:each="cartItem : ${cartItemList}">
-						<form th:action="@{/shoppingCart/updateCartItem}" method="post">
-							<hr />
-							<div class="col-md-3">
-								<a th:href="@{/carDetail(id=${cartItem.car.id})}"> <img
-									style="width:225px;"
-									class="img-responsive shelf-car center-block"
-									th:src="${cartItem.car.profileImageUrl}" />
-								</a>    <!--  th:src="#{adminPath}+@{/image/car/}+ ${cartItem.car.id}+'.jpg'" -->
-							</div>
-							<div class="col-md-3">
-								<div style="margin-left:50px;">
-								<a th:href="@{/carDetail?id=}+${cartItem.car.id}"><h4 th:text="${cartItem.car.title}"></h4></a>
-								<p th:if="${cartItem.car.inStockNumber&gt;10}"
-									style="color: green;">In Stock</p>
-								<p
+						<!-- <form th:action="@{/shoppingCart/updateCartItem}" method="post"> -->
+						<hr width="97%" style="margin-left: 1.8rem;"/>
+						<div class="col-md-3">
+							<a th:href="@{/carDetail(id=${cartItem.car.id})}"> <img								
+								class="img-responsive shelf-car center-block"
+								th:src="${cartItem.car.profileImageUrl}" />
+							</a>
+						</div>
+						<div class="col-md-3">
+							<div>
+								<!--  style="margin-left:5px;" -->
+								<a th:href="@{/carDetail?id=}+${cartItem.car.id}"><strong
+									th:text="${cartItem.car.title}"></strong></a>
+								<!-- <p th:if="${cartItem.car.inStockNumber&gt;10}"
+									style="color: green;">In Stock</p> -->
+								<!-- <p 
 									th:if="${cartItem.car.inStockNumber&lt;10 and cartItem.car.inStockNumber&gt;0}"
 									style="color: green;">
 									Only <span th:text="${cartItem.car.inStockNumber}"></span> In
 									Stock
+								</p> -->
+								<!-- <p th:if="${cartItem.car.inStockNumber==0}"
+									style="color: darkred;">Product Unavailable</p> -->
+								<p style="margin: 1px;">								
+								    <!-- <span th:text="${#calendars.format(pickUpDate,'MM/dd')}"></span> -->	
+									 <em>Booking Period:</em><br/> 
+									 <span th:text="${#calendars.format(pickUpDate,'MM/dd')}"></span><em> to </em>
+									 <span th:text="${#calendars.format(returnBackDate,'MM/dd')}"></span>
 								</p>
-								<p th:if="${cartItem.car.inStockNumber==0}"
-									style="color: darkred;">Product Unavailable</p>
-								<a th:href="@{/shoppingCart/removeItem?id=}+${cartItem.id}">delete</a>
-								</div>
+								<a th:href="@{/shoppingCart/removeItem?id=}+${cartItem.id}">Remove</a>
 							</div>
+						</div>
 
-							<div class="col-md-2">
-								<h5 style="color: #db3208; font-size: large;">
-									$<span th:text="${cartItem.car.ourPrice}"
-										th:style="${cartItem.car.inStockNumber}==0? 'text-decoration: line-through' : ''"></span>
+						<div class="col-md-2">
+							<h5 style="color: #1b3764; font-size: 16px; margin: 1px">
+								Hire: $<span th:text="${cartItem.car.ourPrice}"
+									style="color: #e40475; font-size: 18px;"></span>
+								<!-- th:style="${cartItem.car.inStockNumber}==0? 'text-decoration: line-through' : ''"	 -->
+							</h5>
+							<hr
+								width="58%" align="left" style="border-top: 1px solid #f8f8f8; border-bottom: 1px solid rgba(0, 0, 0, 0.2); margin-top: 5px; margin-bottom: 5px;"/>
+							<div style="margin-bottom:4px">
+								<h5 style="color: #1b3764; font-size: 14px; margin: 1px;">
+									Barter: $<span
+										th:text="${cartItem.car.barterActive} ? ${cartItem.car.barterPrice} : 'NA'"
+										style="color: #e40475; font-size: 16px;"></span>
 								</h5>
 							</div>
+						</div>
 
-							<div class="col-md-2">
-								<input hidden="hidden" name="id" th:value="${cartItem.id}" /> <input
-									th:id="${cartItem.id}" th:name="qty" th:disabled="${cartItem.car.inStockNumber==0}" class="form-control cartItemQty text-center" th:value="${cartItem.qty}" />
-								<button style="display: none;"
-									th:id="'update-item-'+${cartItem.id}" type="submit"
-									class="btn btn-warning btn-xs">Update</button>
-							</div>
-							
-						  <div class="col-md-2">
-						    <a class="btn btn-success"
-							th:href="@{/checkout(id=${cartItem.id})}">Drive Me</a>
-					       </div>
-							
-						</form>
+						<div class="col-md-2" style="border-left: 1px solid rgba(0, 0, 0, 0.2); border-right: 1px solid rgba(0, 0, 0, 0.2); margin-bottom: 4px;">
+							<!-- <input hidden="hidden" name="id" th:value="${cartItem.id}" /> <input
+								th:id="${cartItem.id}" th:name="qty"
+								th:disabled="${cartItem.car.inStockNumber==0}"
+								class="form-control cartItemQty text-center"
+								th:value="${cartItem.qty}" />
+							<button style="display: none;"
+								th:id="'update-item-'+${cartItem.id}" type="submit"
+								class="btn btn-warning btn-xs">Update</button> -->
+								
+							<a class="btn btn-success"
+								th:href="@{/checkout(id=${cartItem.id})}" style="letter-spacing: 1px;">Drive Me</a>								
+						</div>
+
+						<div class="col-md-2">													   						
+							<a th:if="${cartItem.car.barterActive}" class="btn btn-primary" id="btn_blue"
+								th:href="@{/checkout(id=${cartItem.id}, barterActive=${cartItem.car.barterActive})}" style="letter-spacing: 1px;">Barter with Me</a>
+							<h4 th:if="${!cartItem.car.barterActive}">Not Participating</h4>						    
+						</div>
+
+						<!-- </form> -->
 					</div>
 
 					<div class="row">
-						<hr />
-						<h4 class="col-xs-12 text-right">
+						<hr width="97%" style="margin-left: 1.8rem;"/>
+						<!-- <h4 class="col-xs-12 text-right">
 							<strong style="font-size: large;">Total Price (<span
 								th:text="${#lists.size(cartItemList)}"></span> items):
 							</strong> <span style="color: #db3208; font-szie: large;">$<span
 								th:text="${shoppingCart.grandTotal}"></span></span>
-						</h4>
+						</h4> -->
 					</div>
 				</div>
-			</div>
-		</div>
-	</div>
-	<!-- end of container -->
-<div th:replace="common/header :: footer"></div>
+			</div>	
+	
+	<div th:replace="common/header :: footer"></div>
 
 	<div th:replace="common/header :: body-bottom-scripts"></div>
 </body>

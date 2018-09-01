@@ -46,7 +46,7 @@ public class OrderServiceImpl implements OrderService{
 		for(CartItem cartItem : cartItemList) {
 			Car car = cartItem.getCar();
 			cartItem.setOrder(order);
-			car.setInStockNumber(car.getInStockNumber() - cartItem.getQty());
+		//	car.setInStockNumber(car.getInStockNumber() - cartItem.getQty());
 		}
 		
 		order.setCartItemList(cartItemList);

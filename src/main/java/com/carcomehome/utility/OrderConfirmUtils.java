@@ -1,5 +1,7 @@
 package com.carcomehome.utility;
 
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.Date;
 import java.util.Locale;
 
@@ -22,8 +24,8 @@ import com.carcomehome.domain.Order;
 import com.carcomehome.domain.User;
 
 @Component
-public class MailConstructor {
-
+public class OrderConfirmUtils {	
+	
 	@Autowired
 	private Environment env;
 
@@ -37,24 +39,35 @@ public class MailConstructor {
  
     @Autowired
     private ConversionService mvcConversionService;
+	
+	
+	public Date convertDateTimeToDate() {		
+		Date now = new Date();
+		LocalDateTime ldt = LocalDateTime.ofInstant(now.toInstant(), ZoneId.systemDefault());
+		ldt = ldt.minusDays(1);		
+		Date yestDate = Date.from(ldt.atZone(ZoneId.systemDefault()).toInstant());			
+				
+		System.out.println(yestDate);
+		
+		return yestDate;		
+	}
+		
+	
+	public SimpleMailMessage carOwnerConfirmationEmail(User user, User carOwner, String subject, String bodyMessage, Locale locale) {
 
-	public SimpleMailMessage constructResetTokenEmail(String contextPath, Locale locale, String token, User user,
-			String password) {
-
-		String url = contextPath + "/newUser?token=" + token;
-		String message = "\nPlease click on this link to verify your email and edit your personal information. Your password is: \n"
-				+ password;
+		String message = "\nHello -" + bodyMessage;
 		SimpleMailMessage email = new SimpleMailMessage();
 		email.setTo(user.getEmail());
-		email.setSubject("ComeHomeCar Welcomes Joining User");
-		email.setText(url + message);
+		email.setCc(carOwner.getEmail());
+		email.setSubject(subject);
+		email.setText(message);
 		email.setFrom(env.getProperty("support.email"));
 		return email;
 	}
 	
-
-	public MimeMessagePreparator constructOrderConfirmationEmail(Order order, User user, User carOwner, String appUrl,
-			String appUrlCancel, Date pickUpDate, Date returnBackDate, String orderConfirmationTemplate,
+	
+	public MimeMessagePreparator sendCustomerConfirmationEmail(Order order, User user, User carOwner,
+							Date pickUpDate, Date returnBackDate, String sendCustomerConfirmationTemplate,
 			Locale locale) {
 		Context context = new Context();
 		
@@ -63,23 +76,22 @@ public class MailConstructor {
 		
 		context.setVariable("order", order);
 		context.setVariable("user", user);
-		String ownerName = carOwner.getFirstName();
-		context.setVariable("appUrl", appUrl);
-		context.setVariable("appUrlCancel", appUrlCancel);
+		String ownerName = carOwner.getFirstName();		
 		context.setVariable("ownerName", ownerName);
+		String contactPhoneNo = carOwner.getPhone();
+		context.setVariable("contactPhoneNo", contactPhoneNo);
 		context.setVariable("pickUpDate", pickUpDate);
 		context.setVariable("returnBackDate", returnBackDate);
 		context.setVariable("cartItemList", order.getCartItemList());
-		String text = templateEngine.process(orderConfirmationTemplate, context);
+		String text = templateEngine.process(sendCustomerConfirmationTemplate, context);
 
 		MimeMessagePreparator messagePreparator = new MimeMessagePreparator() {
 
 			@Override
 			public void prepare(MimeMessage mimeMessage) throws Exception {
 				MimeMessageHelper email = new MimeMessageHelper(mimeMessage);
-				email.setTo(carOwner.getEmail());
-			//	email.setBcc(user.getEmail());
-				email.setSubject("Order Confirmation Needed - " + order.getId());
+				email.setTo(user.getEmail());			
+				email.setSubject("ComeHomeCar Order Detail - " + order.getId());
 				email.setText(text, true);
 				email.setFrom(new InternetAddress("test777.test77@gmail.com"));
 			}
@@ -87,4 +99,7 @@ public class MailConstructor {
 
 		return messagePreparator;
 	}
+
+	
+	
 }

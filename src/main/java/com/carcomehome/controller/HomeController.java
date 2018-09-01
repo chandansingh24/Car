@@ -2,6 +2,7 @@ package com.carcomehome.controller;
 
 import java.security.Principal;
 import java.text.ParseException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Date;
@@ -14,6 +15,8 @@ import java.util.UUID;
 import javax.servlet.http.HttpServletRequest;
 import javax.websocket.server.PathParam;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -38,17 +41,22 @@ import com.carcomehome.domain.UserBilling;
 import com.carcomehome.domain.UserPayment;
 import com.carcomehome.domain.UserShipping;
 import com.carcomehome.domain.security.PasswordResetToken;
+import com.carcomehome.domain.security.Plan;
 import com.carcomehome.domain.security.Role;
 import com.carcomehome.domain.security.UserRole;
+import com.carcomehome.enums.PlansEnum;
+import com.carcomehome.enums.RolesEnum;
 import com.carcomehome.service.CarService;
 import com.carcomehome.service.CartItemService;
 import com.carcomehome.service.OrderService;
 import com.carcomehome.service.UserPaymentService;
 import com.carcomehome.service.UserService;
 import com.carcomehome.service.UserShippingService;
+import com.carcomehome.service.impl.PlanService;
 import com.carcomehome.service.impl.UserSecurityService;
 import com.carcomehome.utility.DateUtils;
 import com.carcomehome.utility.MailConstructor;
+import com.carcomehome.utility.SearchDates;
 import com.carcomehome.utility.SecurityUtility;
 import com.carcomehome.utility.USConstants;
 
@@ -84,13 +92,18 @@ public class HomeController {
 	@Autowired
 	private OrderService orderService;
 	
-	private Date pickUpDate;
+	@Autowired
+    private PlanService planService;
 	
-	private Date returnBackDate;
+	private static final Logger LOG = LoggerFactory.getLogger(HomeController.class);
 	
-		
+			
 	@RequestMapping("/")
-	public String index() {
+	public String index(Model model) {
+		
+		List<String> stateList = USConstants.listOfUSStatesCode;
+		Collections.sort(stateList);
+		model.addAttribute("stateList", stateList);
 		return "index";
 	}
 
@@ -103,6 +116,11 @@ public class HomeController {
 	public String login(Model model) {
 		model.addAttribute("classActiveLogin", true);
 		return "myAccount";
+	}
+	
+	@RequestMapping("/badRequest")
+	public String badRequest() {
+		return "badRequestPage"; 
 	}
 	
 	@RequestMapping("/carshelf")
@@ -491,25 +509,24 @@ public class HomeController {
 	}
 	
 	
-
 	@RequestMapping(value = "/signUp", method = RequestMethod.GET)
-	public String signUpGet(@RequestParam("planId") int planId) {
-
-		if (planId != 1 && planId != 2) {
-			throw new IllegalArgumentException("Plan id is not valid");
-		}
-
+	public String signUpGet(@RequestParam("planId") int planId) {		
+		
+		if (planId != PlansEnum.SERUSER.getId() && planId != PlansEnum.SERPROVIDER.getId()) {
+            throw new IllegalArgumentException("Plan id is not valid");
+        }				
 		return "signUp";
 	}
+	
 
 	@RequestMapping(value = "/signUp", method = RequestMethod.POST)
 	public String signUpPost(@RequestParam(name = "planId", required = true) int planId, HttpServletRequest request,
 			@ModelAttribute("username") String username, @ModelAttribute("password") String password,
-			@ModelAttribute("fistName") String firstName, @ModelAttribute("lastName") String lastName,
+			@ModelAttribute("firstName") String firstName, @ModelAttribute("lastName") String lastName,
 			@ModelAttribute("email") String email, @ModelAttribute("phone") String phone, ModelMap model)
 			throws Exception {
 
-		if (planId != 1 && planId != 2) {
+		if (planId != PlansEnum.SERUSER.getId() && planId != PlansEnum.SERPROVIDER.getId()) {
 			model.addAttribute("signedUp", "false");
 			model.addAttribute("message", "Plan id does not exist");
 			return "signUp";
@@ -524,9 +541,22 @@ public class HomeController {
 			model.addAttribute("duplicatedEmail", true);
 			return "signUp";
 		}
+		
+		
+		 // Sets the Plan and the Roles (depending on the chosen plan)
+        LOG.debug("Retrieving plan from the database");
+        Plan selectedPlan = planService.findPlanById(planId);
+        if (null == selectedPlan) {
+            LOG.error("The plan id {} could not be found. Throwing exception.", planId);
+            model.addAttribute("signedUp", false);
+            model.addAttribute("message", "Plan id not found");
+            return "signUp";
+        }
+       
 
 		User user = new User();
 		user.setUsername(username);
+		user.setPlan(selectedPlan);
 
 		String encryptedPassword = SecurityUtility.passwordEncoder().encode(password);
 		user.setPassword(encryptedPassword);
@@ -536,32 +566,38 @@ public class HomeController {
 		user.setPhone(phone);
 		user.setEnabled(true);
 
-		Role role = new Role();
+	//	Role role = new Role();
 		User registeredUser = null;
 
-		Set<UserRole> userRoles = new HashSet<>();
-
-		if (planId == 1) {
-			role.setRoleId(1);
-			role.setName("ROLE_USER");
-			userRoles.add(new UserRole(user, role));
-			registeredUser = userService.createUser(user, userRoles);
-		} else {
-			role.setRoleId(2);
-			role.setName("ROLE_OWNER");
-			userRoles.add(new UserRole(user, role));
-			registeredUser = userService.createUser(user, userRoles);
-
-		}
-
+	//	Set<UserRole> userRoles = new HashSet<>();
+		
+	// Assigning roles
+           List<UserRole> userRoles = new ArrayList<>();
+           List<Role> roles = new ArrayList<>(); 
+           List<User> users = new ArrayList<>();
+           users.add(user);
+        
+        if (planId == PlansEnum.SERUSER.getId()) {
+        	roles.add(new Role(RolesEnum.BASICUSER));
+        	userRoles.add(new UserRole(users,  roles));
+            registeredUser = userService.createUser(user, PlansEnum.SERUSER, userRoles);
+        } else {
+        	roles.add(new Role(RolesEnum.BASICUSER));
+        	roles.add(new Role(RolesEnum.OWNER));
+        	userRoles.add(new UserRole(users,  roles));
+            registeredUser = userService.createUser(user, PlansEnum.SERPROVIDER, userRoles);            
+        }
+		
+	
+	 // Auto logins the registered user
 		Authentication auth = new UsernamePasswordAuthenticationToken(registeredUser, null,
 				registeredUser.getAuthorities());
 		SecurityContextHolder.getContext().setAuthentication(auth);
-
+		
+	 LOG.info("User created successfully");
 		model.addAttribute("signedUp", "true");
 
 		return "signUp";
-
 	}
 
 	/*
@@ -764,11 +800,21 @@ public class HomeController {
 				@RequestParam(name="returnDate", required=false) String returnDate,
 				@RequestParam(name="inputZip", required=false) String inputZip,
 				@RequestParam(name="inputCity", required=false) String inputCity,
+				@RequestParam(name="inputState", required=false) String inputState,
 				Model model, Principal principal) throws ParseException {
-			
+		 
+		  Date pickUpDate = null;
+		  Date returnBackDate = null;
+		  
+		  
 	     if ((startDate != "") && (returnDate != "")) {
-	    	 this.pickUpDate = DateUtils.parseDate(startDate);
-		     this.returnBackDate = DateUtils.parseDate(returnDate);	 
+	    	 
+	    	 pickUpDate = DateUtils.parseDate(startDate);
+	    	 SearchDates.setPickUpDate(pickUpDate);  	 
+	    	 
+	    	 returnBackDate = DateUtils.parseDate(returnDate);
+	    	 SearchDates.setReturnBackDate(returnBackDate);
+		      
 		        
 	     } else {
 	    	 
@@ -777,10 +823,10 @@ public class HomeController {
 	     }          
 	     
 		  if (inputZip !="") {
-			  List<Car> carList = carService.findAllCarsZipCode(pickUpDate, returnBackDate);	
+			  List<Car> carList = carService.findAllCarsZipCode(pickUpDate, returnBackDate, inputZip);	
 			  model.addAttribute("carList", carList);			  
 		  } else if (inputCity !="") {
-			  List<Car> carList = carService.findAllCarsCityAndState(pickUpDate, returnBackDate);
+			  List<Car> carList = carService.findAllCarsCityAndState(pickUpDate, returnBackDate, inputCity, inputState);
 			  model.addAttribute("carList", carList);
 		  } else {
 			  model.addAttribute("invalidZipAndCityState", "Please refine your search with either Zipcode or City");
@@ -791,19 +837,11 @@ public class HomeController {
 				User user = userService.findByUsername(username);
 				model.addAttribute("user", user);
 			}
-						
+		  
+			model.addAttribute("pickUpDate", pickUpDate);
+			model.addAttribute("returnBackDate", returnBackDate);
 			model.addAttribute("activeAll", true);
 			return "carshelf";
-		}
-
-	//Pickup & ReturnDate getters
-	  
-	public Date getPickUpDate() {
-		return pickUpDate;
-	}
-
-	public Date getReturnBackDate() {
-		return returnBackDate;
-	}	  
+		}	
    
 }

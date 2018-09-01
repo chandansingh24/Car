@@ -1,5 +1,6 @@
 package com.carcomehome.domain.security;
 
+
 import java.util.Calendar;
 import java.util.Date;
 
@@ -30,7 +31,7 @@ public class PasswordResetToken {
 	@JoinColumn(nullable=false, name="user_id")
 	private User user;
 	
-	private Date expiryDate;
+	private Date expiryDate;	
 	
 	public PasswordResetToken() {}
 

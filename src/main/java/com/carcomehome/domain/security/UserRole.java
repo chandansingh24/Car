@@ -1,6 +1,10 @@
 package com.carcomehome.domain.security;
 
 
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -8,92 +12,98 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
 import com.carcomehome.domain.User;
 
 
-
-
 @Entity
-@Table(name="user_role")
-public class UserRole {
+@Table(name="userrole")
+public class UserRole implements Serializable {
+	
+	 /** The Serial Version UID for Serializable classes. */
+    private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
-	private Long userRoleId;
+	private int id;
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name="user_id")
-	private User user;
+	/*@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name="user_id")	*/
 	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name="role_id")
-	private Role role;
+	
+	
+	@ManyToMany(cascade= {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+	@JoinTable(
+			name="user_userrole",
+	        joinColumns=@JoinColumn(name="userrole_id", referencedColumnName = "id"),
+	        inverseJoinColumns=@JoinColumn(name="user_id", referencedColumnName = "id")			
+			)
+	private List<User> users = new ArrayList<>();	
+	
+		
+	
+	@ManyToMany(fetch=FetchType.EAGER, cascade= {CascadeType.PERSIST, CascadeType.MERGE, CascadeType.DETACH, CascadeType.REFRESH})
+	@JoinTable(
+			name="role_userrole",
+	        joinColumns=@JoinColumn(name="userrole_id", referencedColumnName = "id"),
+	        inverseJoinColumns=@JoinColumn(name="role_id", referencedColumnName = "id")			
+			)
+	private List<Role> roles = new ArrayList<>();
+	
+	
 	
 	public UserRole() {}
 	
-	public UserRole(User user, Role role) {
-		this.user = user;
-		this.role = role;
+	public UserRole(List<User> user, List<Role> roles) {
+		this.users = user;
+		this.roles = roles;
 	}
 
 
-	public Long getUserRoleId() {
-		return userRoleId;
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
+	public List<User> getUser() {
+		return users;
 	}
 
 
-	public void setUserRoleId(Long userRoleId) {
-		this.userRoleId = userRoleId;
+	public void setUser(List<User> user) {
+		this.users = user;
 	}
+	
 
-
-	public User getUser() {
-		return user;
+	public List<Role> getRoles() {
+		return roles;
 	}
+	
 
-
-	public void setUser(User user) {
-		this.user = user;
-	}
-
-
-	public Role getRole() {
-		return role;
-	}
-
-
-	public void setRole(Role role) {
-		this.role = role;
-	}
-
-	/*@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((userRoleId == null) ? 0 : userRoleId.hashCode());
-		return result;
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		UserRole other = (UserRole) obj;
-		if (userRoleId == null) {
-			if (other.userRoleId != null)
-				return false;
-		} else if (!userRoleId.equals(other.userRoleId))
-			return false;
-		return true;
-	}
-//	*/
-	
+	    public boolean equals(Object o) {
+	        if (this == o) return true;
+	        if (o == null || getClass() != o.getClass()) return false;
+
+	        UserRole userRole = (UserRole) o;
+
+	        return id == userRole.id;
+
+	    }
+
+	    @Override
+	    public int hashCode() {
+	        return (int) (id ^ (id >>> 32));
+	    }
 	
 }

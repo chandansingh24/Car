@@ -25,9 +25,9 @@ public class SearchController {
 	@Autowired
 	private CarService carService;
 
-	@RequestMapping("/searchByCategory")
-	public String searchByCategory(
-			@RequestParam("category") String category,
+	@RequestMapping("/searchBySegment")
+	public String searchBySegment(
+			@RequestParam("segment") String segment,
 			Model model, Principal principal
 			){
 		if(principal!=null) {
@@ -36,12 +36,12 @@ public class SearchController {
 			model.addAttribute("user", user);
 		}
 		
-		String classActiveCategory = "active"+category;
+		String classActiveCategory = "active"+segment;
 		classActiveCategory = classActiveCategory.replaceAll("\\s+", "");
 		classActiveCategory = classActiveCategory.replaceAll("&", "");
 		model.addAttribute(classActiveCategory, true);
 		
-		List<Car> carList = carService.findByCategory(category);
+		List<Car> carList = carService.findBySegment(segment);
 		
 		if (carList.isEmpty()) {
 			model.addAttribute("emptyList", true);

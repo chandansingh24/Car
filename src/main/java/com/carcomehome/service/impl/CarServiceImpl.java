@@ -29,11 +29,7 @@ public class CarServiceImpl implements CarService {
 	
 	@Override
 	public List<Car> findAllCars() {
-	 List<Car> carList = (List<Car>) carRepository.findAll();
-		/*String pickUpDate = "2018-02-01";
-		String returnDate = "2018-02-14";
-		List<Car> carList = carRepository.findNonBookedOnes(pickUpDate, returnDate);  //Added as an POC
-*/	 
+	 List<Car> carList = (List<Car>) carRepository.findAll();		
 	 List<Car> activeCarList = new ArrayList<>(); 
 	 
 	 for (Car car: carList) {
@@ -50,14 +46,15 @@ public class CarServiceImpl implements CarService {
 		
 	List<Car> carList = carRepository.findAllByUserId(userId);	
 	
-	 List<Car> activeCarList = new ArrayList<>(); 
+	 /*List<Car> activeCarList = new ArrayList<>(); 
 	 
 	 for (Car car: carList) {
 			if(car.isActive()) {
 				activeCarList.add(car);
 			}
 		}
-	 return activeCarList;
+	 return activeCarList;*/
+	 return carList;	 
 	}	
 	
 	
@@ -67,9 +64,9 @@ public class CarServiceImpl implements CarService {
     }
 
 	@Override
-	public List<Car> findByCategory(String category) {
+	public List<Car> findBySegment(String segment) {
        
-		List<Car> carList = carRepository.findByCategory(category);
+		List<Car> carList = carRepository.findBySegment(segment);
 		
 		List<Car> activeCarList = new ArrayList<>();
 		
@@ -99,11 +96,11 @@ public class CarServiceImpl implements CarService {
 	}
 
 	@Override
-	public List<Car> findAllCarsZipCode(Date pickUpDate, Date returnDate) {
+	public List<Car> findAllCarsZipCode(Date pickUpDate, Date returnDate, String inputZip) {
 		
 			 /*pickUpDate = "2018-02-01";
 			 returnDate = "2018-02-14";*/
-		List<Car> carList = carRepository.findNonBookedCarsZipCode(pickUpDate, returnDate);  //Added as an POC
+		List<Car> carList = carRepository.findNonBookedCarsZipCode(pickUpDate, returnDate, inputZip);  
 		 
 		 List<Car> activeCarList = new ArrayList<>(); 
 		 
@@ -116,9 +113,9 @@ public class CarServiceImpl implements CarService {
 	}
 
 	@Override
-	public List<Car> findAllCarsCityAndState(Date pickUpDate, Date returnDate) {
+	public List<Car> findAllCarsCityAndState(Date pickUpDate, Date returnDate, String inputCity, String inputState) {
 		
-		 List<Car> carList = carRepository.findNonBookedCarsCityAndState(pickUpDate, returnDate);
+		 List<Car> carList = carRepository.findNonBookedCarsCityAndState(pickUpDate, returnDate, inputCity, inputState);
 		 
 		 List<Car> activeCarList = new ArrayList<>(); 
 		 

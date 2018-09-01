@@ -20,62 +20,65 @@ public class Car {
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
 	private Long id;
+	
 	private String title;
-
-	private String owner;
 
 	private String company;
 	
-	private String manufacturingDate;
+    private String makeAndModel;
+//	private String manufacturingDate;
 	
-	private int numberOfDoors;
+    private String feature;       //Manual or Automatic
+//  private int numberOfDoors;
 	
 	private String category;
 	
-	private int numberOfOccupancy;
+	private String seatingCapacity;
+//	private int numberOfOccupancy;
 	
-	private String model;
-	
-	private String uniqueIdentification;
-	
-	private double totalWeight;
+	private String owner;	
+	private String segment;
+		
+//	private String model;	
+//	private String uniqueIdentification;	
+//	private double totalWeight;
 	
 	private double listPrice;
 	private double ourPrice;
-	private boolean active=true;
+	private double barterPrice;
+	private boolean active=true;	
+	private boolean barterActive=true;
 	
 	@Column(columnDefinition="text")
 	private String description;
-	private int inStockNumber;
+	
+	private int inStockNumber = 1;
+	
+	private String businessAddressStreet1;
+	private String businessAddressStreet2;
+	private String businessAddressCity;
+	private String businessAddressState;
+	private String businessAddressCountry;
+	private String businessAddressZipcode;	
+	
+	
+	@Column(name = "profile_image_url")
+    private String profileImageUrl;
 	
 	@ManyToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="user_id")
 	private User user;
 	
-	@Column(name = "profile_image_url")
-    private String profileImageUrl;
-	
 	//Reservation Table Mapping
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER, mappedBy = "car")
 	private List<Reservation> reservation; 
-	
-     	
-//	@Transient
-//	private MultipartFile carImage;        //@Transient - Not stored in database
 	
 	@OneToMany(mappedBy = "car")
 	@JsonIgnore
 	private List<CarToCartItem> carToCartItemList;
 
 	
-	public List<Reservation> getReservation() {
-		return reservation;
-	}
-
-	public void setReservation(List<Reservation> reservation) {
-		this.reservation = reservation;
-	}
-
+	
 	public Long getId() {
 		return id;
 	}
@@ -124,54 +127,6 @@ public class Car {
 
 	public void setCompany(String company) {
 		this.company = company;
-	}
-
-	public String getManufacturingDate() {
-		return manufacturingDate;
-	}
-
-	public void setManufacturingDate(String manufacturingDate) {
-		this.manufacturingDate = manufacturingDate;
-	}
-
-	public int getNumberOfDoors() {
-		return numberOfDoors;
-	}
-
-	public void setNumberOfDoors(int numberOfDoors) {
-		this.numberOfDoors = numberOfDoors;
-	}
-
-	public int getNumberOfOccupancy() {
-		return numberOfOccupancy;
-	}
-
-	public void setNumberOfOccupancy(int numberOfOccupancy) {
-		this.numberOfOccupancy = numberOfOccupancy;
-	}
-
-	public String getModel() {
-		return model;
-	}
-
-	public void setModel(String model) {
-		this.model = model;
-	}
-
-	public String getUniqueIdentification() {
-		return uniqueIdentification;
-	}
-
-	public void setUniqueIdentification(String uniqueIdentification) {
-		this.uniqueIdentification = uniqueIdentification;
-	}
-
-	public double getTotalWeight() {
-		return totalWeight;
-	}
-
-	public void setTotalWeight(double totalWeight) {
-		this.totalWeight = totalWeight;
 	}	
 
 	public double getListPrice() {
@@ -181,7 +136,7 @@ public class Car {
 	public void setListPrice(double listPrice) {
 		this.listPrice = listPrice;
 	}
-
+	
 	public double getOurPrice() {
 		return ourPrice;
 	}
@@ -205,7 +160,56 @@ public class Car {
 	public void setDescription(String description) {
 		this.description = description;
 	}
+	
+	public String getMakeAndModel() {
+		return makeAndModel;
+	}
 
+	public void setMakeAndModel(String makeAndModel) {
+		this.makeAndModel = makeAndModel;
+	}
+
+	public String getFeature() {
+		return feature;
+	}
+
+	public void setFeature(String feature) {
+		this.feature = feature;
+	}
+
+	public String getSeatingCapacity() {
+		return seatingCapacity;
+	}
+
+	public void setSeatingCapacity(String seatingCapacity) {
+		this.seatingCapacity = seatingCapacity;
+	}
+
+	public String getSegment() {
+		return segment;
+	}
+
+	public void setSegment(String segment) {
+		this.segment = segment;
+	}
+
+	public double getBarterPrice() {
+		return barterPrice;
+	}
+
+	public void setBarterPrice(double barterPrice) {
+		this.barterPrice = barterPrice;
+	}
+
+	public boolean isBarterActive() {
+		return barterActive;
+	}
+
+	public void setBarterActive(boolean barterActive) {
+		this.barterActive = barterActive;
+	}
+	
+	
 	public int getInStockNumber() {
 		return inStockNumber;
 	}
@@ -214,23 +218,71 @@ public class Car {
 		this.inStockNumber = inStockNumber;
 	}
 
+	public String getBusinessAddressStreet1() {
+		return businessAddressStreet1;
+	}
+
+	public void setBusinessAddressStreet1(String businessAddressStreet1) {
+		this.businessAddressStreet1 = businessAddressStreet1;
+	}
+
+	public String getBusinessAddressStreet2() {
+		return businessAddressStreet2;
+	}
+
+	public void setBusinessAddressStreet2(String businessAddressStreet2) {
+		this.businessAddressStreet2 = businessAddressStreet2;
+	}
+
+	public String getBusinessAddressCity() {
+		return businessAddressCity;
+	}
+
+	public void setBusinessAddressCity(String businessAddressCity) {
+		this.businessAddressCity = businessAddressCity;
+	}
+
+	public String getBusinessAddressState() {
+		return businessAddressState;
+	}
+
+	public void setBusinessAddressState(String businessAddressState) {
+		this.businessAddressState = businessAddressState;
+	}
+
+	public String getBusinessAddressCountry() {
+		return businessAddressCountry;
+	}
+
+	public void setBusinessAddressCountry(String businessAddressCountry) {
+		this.businessAddressCountry = businessAddressCountry;
+	}
+
+	public String getBusinessAddressZipcode() {
+		return businessAddressZipcode;
+	}
+
+	public void setBusinessAddressZipcode(String businessAddressZipcode) {
+		this.businessAddressZipcode = businessAddressZipcode;
+	}
+
 	public String getProfileImageUrl() {
 		return profileImageUrl;
 	}
 
 	public void setProfileImageUrl(String profileImageUrl) {
 		this.profileImageUrl = profileImageUrl;
-	}	
+	}		
+
 	
-
-	/*public MultipartFile getCarImage() {
-		return carImage;
+	public List<Reservation> getReservation() {
+		return reservation;
 	}
 
-	public void setCarImage(MultipartFile carImage) {
-		this.carImage = carImage;
+	public void setReservation(List<Reservation> reservation) {
+		this.reservation = reservation;
 	}
-*/
+	
 	public List<CarToCartItem> getCarToCartItemList() {
 		return carToCartItemList;
 	}
